@@ -1,0 +1,38 @@
+export interface Contribution {
+  id: string;
+  memberId: string;
+  member: Member;
+  contributionTypeId: string;
+  contributionType: ContributionType;
+  paymentMethodId: string;
+  paymentMethod: PaymentMethod;
+  amount: number;
+  date: string;
+  observation: string;
+  createdAt: string;
+}
+
+export interface Member {
+  id: string;
+  name: string;
+  memberTypeId: string;
+  memberType: MemberType;
+
+  createdAt: string;
+}
+
+export interface MemberType {
+  id: string;
+  description: string;
+}
+
+export interface ContributionType {
+  id: string;
+  description: string;
+}
+
+export interface PaymentMethod {
+  id: string;
+  type: string;
+  description: string;
+}

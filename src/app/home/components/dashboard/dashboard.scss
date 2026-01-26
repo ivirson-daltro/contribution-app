@@ -1,0 +1,48 @@
+.dashboard {
+  background-color: var(--mat-sys-surface-container-lowest);
+
+  .panel {
+    padding: 1rem 1.25rem 1.15rem;
+    border-radius: 0.625rem;
+    box-shadow: 0 1px 1px rgba(15, 23, 42, 0.06);
+    border: 1px solid rgba(148, 163, 184, 0.25);
+    background-color: #ffffff;
+  }
+
+  .panel-title {
+    font-size: 0.9rem;
+    font-weight: 600;
+  }
+
+  .panel-empty {
+    min-height: 220px;
+    border-radius: 0.625rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f8fafc;
+  }
+
+  .payment-card {
+    border-radius: 0.625rem;
+    padding: 0.85rem 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #1933661a;
+  }
+
+  .payment-title {
+    font-weight: 700;
+  }
+
+  .payment-subtitle {
+    font-size: 0.7rem;
+    color: #626d84;
+  }
+
+  .payment-amount {
+    font-size: 1.25rem;
+    font-weight: 700;
+  }
+}

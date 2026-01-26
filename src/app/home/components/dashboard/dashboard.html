@@ -1,0 +1,143 @@
+<div class="dashboard container-fluid py-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+      <h1 class="h4 mb-1 fw-semibold">Dashboard</h1>
+      <p class="text-muted small mb-0">Visão geral das contribuições da igreja</p>
+    </div>
+  </div>
+
+  <!-- Cards de resumo -->
+  <div class="row g-3 mb-4">
+    <div class="col-12 col-md-6 col-xl-3">
+      <app-summary-card
+        [title]="'Total da Semana'"
+        [subtitle]="(dashboardSummary$ | async)?.totalWeeklyContributions + ' contribuições'"
+        [amount]="
+          ((dashboardSummary$ | async)?.totalWeeklyAmount
+            | currency: 'BRL' : 'symbol' : '1.2-2' : 'pt-BR') ?? 0
+        "
+        iconSrc="icons/calendar.svg"
+        iconAlt="Ícone de calendário"
+      />
+    </div>
+
+    <div class="col-12 col-md-6 col-xl-3">
+      <app-summary-card
+        [title]="'Total do Mês'"
+        [subtitle]="(dashboardSummary$ | async)?.totalMonthlyContributions + ' contribuições'"
+        [amount]="
+          ((dashboardSummary$ | async)?.totalMonthlyAmount
+            | currency: 'BRL' : 'symbol' : '1.2-2' : 'pt-BR') ?? 0
+        "
+        iconSrc="icons/trending.svg"
+        iconAlt="Ícone de tendência"
+      />
+    </div>
+
+    <div class="col-12 col-md-6 col-xl-3">
+      <app-summary-card
+        [title]="'Total Geral'"
+        [subtitle]="(dashboardSummary$ | async)?.totalContributions + ' contribuições'"
+        [amount]="
+          ((dashboardSummary$ | async)?.totalAmount
+            | currency: 'BRL' : 'symbol' : '1.2-2' : 'pt-BR') ?? 0
+        "
+        iconSrc="icons/dollar.svg"
+        iconAlt="Ícone de cifrão"
+      />
+    </div>
+
+    <div class="col-12 col-md-6 col-xl-3">
+      <app-summary-card
+        [title]="'Membros Ativos'"
+        subtitle="Membros contribuintes"
+        [amount]="(dashboardSummary$ | async)?.totalMembers ?? 0"
+        iconSrc="icons/users.svg"
+        iconAlt="Ícone de usuários"
+      />
+    </div>
+  </div>
+
+  <!-- Gráfico e formas de pagamento -->
+  <div class="row g-3 mb-4">
+    <div class="col-12 col-lg-7">
+      <mat-card class="panel h-100">
+        <h2 class="panel-title mb-3">Distribuição por Forma de pagamento</h2>
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h2 class="panel-title mb-0">Forma de Pagamento</h2>
+          <div class="btn-group" role="group" aria-label="Período do gráfico de pagamentos">
+            <button
+              mat-button
+              type="button"
+              [color]="selectedPaymentPeriod === 'weekly' ? 'primary' : undefined"
+              (click)="setPaymentPeriod('weekly')"
+            >
+              Semana atual
+            </button>
+            <button
+              mat-button
+              type="button"
+              [color]="selectedPaymentPeriod === 'monthly' ? 'primary' : undefined"
+              (click)="setPaymentPeriod('monthly')"
+            >
+              Mês atual
+            </button>
+          </div>
+        </div>
+
+        <app-payment-method-chart
+          [totals]="dashboardSummaryChart$ | async"
+          [period]="selectedPaymentPeriod"
+        />
+      </mat-card>
+    </div>
+
+    <div class="col-12 col-lg-5">
+      <mat-card class="panel h-100">
+        <h2 class="panel-title mb-3">Formas de Pagamento</h2>
+
+        @for (item of (dashboardSummary$ | async)?.contributionsByPaymentMethod; track $index) {
+          <div class="payment-card mb-2 py-3">
+            <div>
+              <div class="payment-title">{{ item.type }}</div>
+              <div class="payment-subtitle">{{ item.description }}</div>
+            </div>
+            <div class="payment-amount">
+              {{ item.total | currency: 'BRL' : 'symbol' : '1.2-2' : 'pt-BR' }}
+            </div>
+          </div>
+        }
+      </mat-card>
+    </div>
+  </div>
+
+  <!-- Tabela de contribuições recentes -->
+  <div class="row g-3">
+    <div class="col-12">
+      <mat-card class="panel">
+        <h2 class="panel-title mb-3">Contribuições Recentes</h2>
+        <div class="table-responsive">
+          <table class="table align-middle mb-0">
+            <thead class="table-light">
+              <tr>
+                <th>Data</th>
+                <th>Membro</th>
+                <th>Tipo</th>
+                <th>Pagamento</th>
+                <th>Valor</th>
+                <th class="text-end">Ações</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td colspan="6" class="text-center text-muted small py-4">
+                  Nenhuma contribuição encontrada.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </mat-card>
+    </div>
+  </div>
+</div>
