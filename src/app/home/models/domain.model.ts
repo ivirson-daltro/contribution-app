@@ -1,7 +1,15 @@
+export interface PaginatedResponse<T> {
+  total: number;
+  page: number;
+  limit: number;
+  offset: number;
+  data: T[];
+}
+
 export interface Contribution {
   id: string;
-  memberId: string;
-  member: Member;
+  memberId?: string;
+  member?: Member;
   contributionTypeId: string;
   contributionType: ContributionType;
   paymentMethodId: string;

@@ -1,0 +1,73 @@
+.cadastrar-container {
+  .card-title {
+    margin: 0 0 1.5rem;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #0b2454;
+  }
+
+  .contribution-form {
+    .form-body {
+      padding-top: 0.25rem;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 0.35rem;
+      color: #374151;
+    }
+
+    .mat-mdc-form-field {
+      width: 100%;
+    }
+
+    .mat-mdc-text-field-wrapper {
+      background-color: #f7f9fc;
+      border-radius: 0.75rem;
+    }
+
+    .mat-mdc-form-field-appearance-outline .mdc-notched-outline__leading,
+    .mat-mdc-form-field-appearance-outline .mdc-notched-outline__notch,
+    .mat-mdc-form-field-appearance-outline .mdc-notched-outline__trailing {
+      border-color: #d1d5db;
+    }
+
+    .mat-mdc-form-field.mat-focused .mdc-notched-outline__leading,
+    .mat-mdc-form-field.mat-focused .mdc-notched-outline__notch,
+    .mat-mdc-form-field.mat-focused .mdc-notched-outline__trailing {
+      border-color: #1d4ed8;
+    }
+
+    .form-footer {
+      margin-top: 1.5rem;
+      padding-top: 1rem;
+      border-top: 1px solid #e5e7eb;
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    .cancel-button {
+      color: #6b7280;
+    }
+
+    .submit-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      height: 3rem;
+      border-radius: 0.625rem;
+      background-color: #0b2454;
+      font-weight: 600;
+    }
+  }
+}
+
+@media (max-width: 600px) {
+  .cadastrar-card {
+    padding: 1.25rem 1.25rem 1.75rem;
+  }
+}

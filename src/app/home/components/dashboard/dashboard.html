@@ -58,26 +58,25 @@
     </div>
   </div>
 
-  <!-- Gráfico e formas de pagamento -->
+  <!-- Gráficos -->
   <div class="row g-3 mb-4">
-    <div class="col-12 col-lg-7">
+    <div class="col-12 col-lg-6">
       <mat-card class="panel h-100">
         <h2 class="panel-title mb-3">Distribuição por Forma de pagamento</h2>
-        <div class="d-flex justify-content-between align-items-center mb-3">
-          <h2 class="panel-title mb-0">Forma de Pagamento</h2>
+        <div class="d-flex justify-content-end align-items-center mb-3">
           <div class="btn-group" role="group" aria-label="Período do gráfico de pagamentos">
             <button
-              mat-button
+              mat-stroked-button
+              class="period-toggle-btn me-2"
               type="button"
-              [color]="selectedPaymentPeriod === 'weekly' ? 'primary' : undefined"
               (click)="setPaymentPeriod('weekly')"
             >
               Semana atual
             </button>
             <button
-              mat-button
+              mat-stroked-button
+              class="period-toggle-btn"
               type="button"
-              [color]="selectedPaymentPeriod === 'monthly' ? 'primary' : undefined"
               (click)="setPaymentPeriod('monthly')"
             >
               Mês atual
@@ -92,52 +91,48 @@
       </mat-card>
     </div>
 
-    <div class="col-12 col-lg-5">
+    <div class="col-12 col-lg-6">
+      <mat-card class="panel h-100">
+        <h2 class="panel-title mb-5">Contribuições por mês</h2>
+
+        <app-monthly-contributions-chart
+          [currentYear]="(dashboardSummary$ | async)?.currentYearContributionsByMonth"
+          [lastYear]="(dashboardSummary$ | async)?.lastYearContributionsByMonth"
+        />
+      </mat-card>
+    </div>
+
+    <div class="col-12">
       <mat-card class="panel h-100">
         <h2 class="panel-title mb-3">Formas de Pagamento</h2>
 
-        @for (item of (dashboardSummary$ | async)?.contributionsByPaymentMethod; track $index) {
-          <div class="payment-card mb-2 py-3">
-            <div>
-              <div class="payment-title">{{ item.type }}</div>
-              <div class="payment-subtitle">{{ item.description }}</div>
+        <div class="row">
+          @for (item of (dashboardSummary$ | async)?.contributionsByPaymentMethod; track $index) {
+            <div class="col-12 col-lg-6">
+              <div class="payment-card mb-2 py-3">
+                <div>
+                  <div class="payment-title">{{ item.type }}</div>
+                  <div class="payment-subtitle">{{ item.description }}</div>
+                </div>
+                <div class="payment-amount">
+                  {{ item.total | currency: 'BRL' : 'symbol' : '1.2-2' : 'pt-BR' }}
+                </div>
+              </div>
             </div>
-            <div class="payment-amount">
-              {{ item.total | currency: 'BRL' : 'symbol' : '1.2-2' : 'pt-BR' }}
-            </div>
-          </div>
-        }
-      </mat-card>
-    </div>
-  </div>
-
-  <!-- Tabela de contribuições recentes -->
-  <div class="row g-3">
-    <div class="col-12">
-      <mat-card class="panel">
-        <h2 class="panel-title mb-3">Contribuições Recentes</h2>
-        <div class="table-responsive">
-          <table class="table align-middle mb-0">
-            <thead class="table-light">
-              <tr>
-                <th>Data</th>
-                <th>Membro</th>
-                <th>Tipo</th>
-                <th>Pagamento</th>
-                <th>Valor</th>
-                <th class="text-end">Ações</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td colspan="6" class="text-center text-muted small py-4">
-                  Nenhuma contribuição encontrada.
-                </td>
-              </tr>
-            </tbody>
-          </table>
+          }
         </div>
       </mat-card>
+    </div>
+
+    <!-- Tabela de contribuições recentes -->
+    <div class="row g-3">
+      <div class="col-12">
+        <mat-card class="panel">
+          <h2 class="panel-title mb-3">Contribuições Recentes</h2>
+
+          <app-recent-contributions-table></app-recent-contributions-table
+        ></mat-card>
+      </div>
     </div>
   </div>
 </div>

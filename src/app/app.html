@@ -15,18 +15,22 @@
         <mat-icon>space_dashboard</mat-icon>
         <span>Dashboard</span>
       </button>
-      <button mat-button class="layout-sidenav__item">
+      <button mat-button class="layout-sidenav__item" (click)="openNewContribution()">
         <mat-icon>add</mat-icon>
         <span>Nova Contribuição</span>
       </button>
-      <button mat-button class="layout-sidenav__item">
+      <button mat-button class="layout-sidenav__item" (click)="openNewMember()">
+        <mat-icon>add</mat-icon>
+        <span>Novo Membro</span>
+      </button>
+      <!-- <button mat-button class="layout-sidenav__item">
         <mat-icon>list</mat-icon>
         <span>Listar Contribuições</span>
       </button>
       <button mat-button class="layout-sidenav__item">
         <mat-icon>bar_chart</mat-icon>
         <span>Relatórios</span>
-      </button>
+      </button> -->
     </nav>
 
     <div class="layout-sidenav__footer">
@@ -58,3 +62,11 @@
     </main>
   </mat-sidenav-content>
 </mat-sidenav-container>
+
+@if (isLoading$ | async) {
+  <div class="global-loading-overlay">
+    <div class="global-loading-spinner spinner-border" role="status">
+      <span class="visually-hidden">Carregando...</span>
+    </div>
+  </div>
+}

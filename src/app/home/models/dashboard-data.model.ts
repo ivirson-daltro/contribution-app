@@ -8,6 +8,14 @@ export interface DashboardSummary {
   totalMembers: number;
   totalMembersContributing: number;
   contributionsByPaymentMethod: ContributionByPaymentMethod[];
+  currentYearContributionsByMonth: MonthlyContribution[];
+  lastYearContributionsByMonth: MonthlyContribution[];
+}
+
+export interface MonthlyContribution {
+  month: string;
+  totalPix: number;
+  totalCash: number;
 }
 
 export interface ContributionByPaymentMethod {

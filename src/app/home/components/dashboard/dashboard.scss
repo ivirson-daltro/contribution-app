@@ -10,7 +10,7 @@
   }
 
   .panel-title {
-    font-size: 0.9rem;
+    font-size: 1.5rem;
     font-weight: 600;
   }
 
@@ -44,5 +44,35 @@
   .payment-amount {
     font-size: 1.25rem;
     font-weight: 700;
+  }
+
+  .table thead th.sortable {
+    cursor: pointer;
+    user-select: none;
+    white-space: nowrap;
+  }
+
+  .table thead th.sortable .sort-icon {
+    font-size: 1rem;
+    margin-left: 0.25rem;
+    vertical-align: middle;
+  }
+
+  .period-toggle-btn {
+    border-color: #0b2454;
+    color: #0b2454;
+    padding-inline: 0.9rem;
+    font-size: 0.78rem;
+    border-radius: 0.625rem;
+
+    &.mat-mdc-button-base:hover {
+      background-color: rgba(11, 36, 84, 0.04);
+    }
+
+    &.mat-mdc-unelevated-button.mat-primary,
+    &.mat-mdc-outlined-button.mat-primary {
+      border-color: #0b2454;
+      color: #0b2454;
+    }
   }
 }
