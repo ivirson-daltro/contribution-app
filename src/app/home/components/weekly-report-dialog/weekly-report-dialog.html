@@ -1,0 +1,27 @@
+<h2 mat-dialog-title>Relatório semanal</h2>
+
+<div mat-dialog-content>
+  <form [formGroup]="form" class="weekly-report-form">
+    <div class="mb-3">
+      <label for="startDate" class="form-label">Data inicial</label>
+      <input id="startDate" type="date" class="form-control" formControlName="startDate" />
+    </div>
+
+    <div class="mb-3">
+      <label for="endDate" class="form-label">Data final</label>
+      <input id="endDate" type="date" class="form-control" formControlName="endDate" />
+    </div>
+  </form>
+</div>
+
+<div mat-dialog-actions class="d-flex justify-content-end gap-2">
+  <button
+    type="button"
+    class="btn btn-primary submit-button"
+    [disabled]="form.invalid"
+    (click)="submit()"
+  >
+    <mat-icon fontIcon="download" class="submit-icon"></mat-icon> Gerar PDF
+  </button>
+  <button type="button" class="btn cancel-button" (click)="close()">Cancelar</button>
+</div>

@@ -5,9 +5,13 @@ import { first, Observable } from 'rxjs';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { AsyncPipe, CurrencyPipe, DatePipe } from '@angular/common';
 import { ContributionsService } from '../../../contributions/services/contributions';
 import { FormGroup, FormsModule } from '@angular/forms';
+import { WeeklyReportDialogComponent } from '../weekly-report-dialog/weekly-report-dialog';
+import { ToastService } from '../../../shared/services/toast';
 
 @Component({
   selector: 'app-recent-contributions-table',
@@ -15,6 +19,8 @@ import { FormGroup, FormsModule } from '@angular/forms';
     MatCardModule,
     MatButtonModule,
     MatIconModule,
+    MatDialogModule,
+    MatSnackBarModule,
     AsyncPipe,
     DatePipe,
     CurrencyPipe,
@@ -26,6 +32,8 @@ import { FormGroup, FormsModule } from '@angular/forms';
 export class RecentContributionsTableComponent implements OnInit {
   private readonly dashboardService = inject(DashboardService);
   private readonly contributionsService = inject(ContributionsService);
+  private readonly dialog = inject(MatDialog);
+  private readonly toastService = inject(ToastService);
 
   form!: FormGroup;
 
@@ -46,6 +54,8 @@ export class RecentContributionsTableComponent implements OnInit {
   memberId: string | null = null;
   contributionTypeId: string | null = null;
   paymentMethodId: string | null = null;
+  startDate: string | null = null;
+  endDate: string | null = null;
 
   ngOnInit(): void {
     this.getContributionList();
@@ -139,5 +149,45 @@ export class RecentContributionsTableComponent implements OnInit {
 
     const parsed = Number(raw);
     return Number.isNaN(parsed) ? 0 : parsed;
+  }
+
+  getWeeklyReport(): void {
+    const dialogRef = this.dialog.open(WeeklyReportDialogComponent, {
+      width: '400px',
+      autoFocus: false,
+    });
+
+    dialogRef
+      .afterClosed()
+      .pipe(first())
+      .subscribe((result) => {
+        if (!result) {
+          return;
+        }
+
+        const { startDate, endDate } = result as { startDate: string; endDate: string };
+
+        if (!startDate || !endDate) {
+          this.toastService.warning('Informe a data inicial e final para o relatório.');
+          return;
+        }
+
+        this.dashboardService
+          .getWeeklyReport(startDate, endDate)
+          .pipe(first())
+          .subscribe({
+            next: (blob) => {
+              const url = window.URL.createObjectURL(blob);
+              const a = document.createElement('a');
+              a.href = url;
+              a.download = `relatorio-semanal-${startDate}-a-${endDate}.pdf`;
+              a.click();
+              window.URL.revokeObjectURL(url);
+            },
+            error: () => {
+              this.toastService.error('Erro ao gerar relatório semanal.');
+            },
+          });
+      });
   }
 }

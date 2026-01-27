@@ -35,15 +35,17 @@
 
     <div class="layout-sidenav__footer">
       <div class="user-card">
-        <div class="user-card__avatar">A</div>
+        <div class="user-card__avatar">{{ user?.name?.charAt(0) }}</div>
         <div class="user-card__info">
-          <div class="user-card__name">Administrador</div>
-          <div class="user-card__email">admin@igreja.com</div>
-          <span class="user-card__role">Administrador</span>
+          <div class="user-card__name">{{ user?.name }}</div>
+          <div class="user-card__email">{{ user?.email }}</div>
+          <span class="user-card__role">{{
+            user?.role === 'TREASURER' ? 'Tesoureiro' : 'Conselho Fiscal'
+          }}</span>
         </div>
       </div>
 
-      <button mat-button class="layout-sidenav__logout">
+      <button mat-button class="layout-sidenav__logout" (click)="logout()">
         <mat-icon>logout</mat-icon>
         <span>Sair</span>
       </button>
@@ -62,11 +64,3 @@
     </main>
   </mat-sidenav-content>
 </mat-sidenav-container>
-
-@if (isLoading$ | async) {
-  <div class="global-loading-overlay">
-    <div class="global-loading-spinner spinner-border" role="status">
-      <span class="visually-hidden">Carregando...</span>
-    </div>
-  </div>
-}

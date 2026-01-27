@@ -59,4 +59,13 @@ export class DashboardService {
       `${environment.apiUrl}/contributions/dashboard/payment-methods`,
     );
   }
+
+  getWeeklyReport(startDate: string, endDate: string): Observable<Blob> {
+    const params = new HttpParams().set('startDate', startDate).set('endDate', endDate);
+
+    return this.httpClient.get(`${environment.apiUrl}/contributions/weekly/report`, {
+      params,
+      responseType: 'blob',
+    });
+  }
 }

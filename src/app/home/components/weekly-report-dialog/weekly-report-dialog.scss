@@ -1,0 +1,27 @@
+.weekly-report-form {
+  min-width: 260px;
+}
+
+.weekly-report-form .form-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  height: 2.5rem;
+  margin-top: 1.75rem;
+}
+
+.submit-button {
+  border-radius: 0.625rem;
+  background-color: #0b2454;
+  font-weight: 600;
+}
+
+.cancel-button {
+  color: #6b7280;
+}

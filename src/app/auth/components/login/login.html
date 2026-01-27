@@ -1,1 +1,53 @@
-<p>login works!</p>
+<div class="auth-page d-flex align-items-center justify-content-center">
+  <div class="auth-card">
+    <div class="auth-icon-wrapper">
+      <img src="images/logo.png" alt="Logo da igreja" />
+    </div>
+
+    <h1 class="auth-title">Gestão de Contribuições</h1>
+    <p class="auth-subtitle">Faça login para acessar o sistema</p>
+
+    <form [formGroup]="form" (ngSubmit)="submit()" class="auth-form">
+      <div class="mb-3">
+        <label class="form-label">Email</label>
+        <input
+          type="email"
+          class="form-control"
+          placeholder="seu@email.com"
+          formControlName="email"
+        />
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Senha</label>
+        <input
+          type="password"
+          class="form-control"
+          placeholder="Digite sua senha"
+          formControlName="password"
+        />
+      </div>
+
+      <div class="mb-4 d-flex align-items-center">
+        <div class="form-check">
+          <input
+            id="rememberMe"
+            type="checkbox"
+            class="form-check-input"
+            formControlName="rememberMe"
+          />
+          <label for="rememberMe" class="form-check-label">Salvar email</label>
+        </div>
+      </div>
+
+      <button
+        type="submit"
+        class="btn btn-primary auth-submit-btn w-100 mb-4"
+        [disabled]="form.invalid"
+      >
+        <mat-icon fontIcon="login" class="me-2"></mat-icon>
+        Entrar
+      </button>
+    </form>
+  </div>
+</div>

@@ -1,8 +1,44 @@
-import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { inject, Injectable } from '@angular/core';
+import { map, Observable, tap } from 'rxjs';
+import { environment } from '../../../environments/environment';
+import { UserCredentials } from '../models/user-credentials.model';
+import { User } from '../models/user.model';
 
 @Injectable({
   providedIn: 'root',
 })
-export class Auth {
-  
+export class AuthService {
+  private readonly httpClient = inject(HttpClient);
+
+  login(credentials: UserCredentials): Observable<void> {
+    return this.httpClient
+      .post<{ token: string; user: User }>(`${environment.apiUrl}/auth/login`, credentials)
+      .pipe(
+        tap((response) => {
+          const token = response?.token;
+          if (token) {
+            localStorage.setItem('authToken', token);
+            localStorage.setItem('user', JSON.stringify(response.user));
+          }
+        }),
+        map(() => void 0),
+      );
+  }
+
+  register(user: User): Observable<void> {
+    return this.httpClient.post<void>(`${environment.apiUrl}/auth/users`, user);
+  }
+
+  getToken(): string | null {
+    return localStorage.getItem('authToken');
+  }
+
+  isAuthenticated(): boolean {
+    return !!this.getToken();
+  }
+
+  logout(): void {
+    localStorage.removeItem('authToken');
+  }
 }

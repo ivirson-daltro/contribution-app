@@ -1,0 +1,67 @@
+<div class="auth-page d-flex align-items-center justify-content-center">
+  <div class="auth-card">
+    <div class="auth-icon-wrapper">
+      <img src="images/logo.png" alt="Logo da igreja" />
+    </div>
+
+    <h1 class="auth-title">Criar conta</h1>
+    <p class="auth-subtitle">Registre um novo usuário para acessar o sistema</p>
+
+    <form [formGroup]="form" (ngSubmit)="submit()" class="auth-form">
+      <div class="mb-3">
+        <label class="form-label">Nome</label>
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Digite o nome completo"
+          formControlName="name"
+        />
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Email</label>
+        <input
+          type="email"
+          class="form-control"
+          placeholder="seu@email.com"
+          formControlName="email"
+        />
+      </div>
+
+      <div class="row mb-3">
+        <div class="col-12 col-md-6">
+          <label class="form-label">Senha</label>
+          <input
+            type="password"
+            class="form-control"
+            placeholder="Mínimo 6 caracteres"
+            formControlName="password"
+          />
+        </div>
+        <div class="col-12 col-md-6">
+          <label class="form-label">Confirmar Senha</label>
+          <input
+            type="password"
+            class="form-control"
+            placeholder="Repita a senha"
+            formControlName="confirmPassword"
+          />
+        </div>
+      </div>
+
+      <div class="mb-4">
+        <label class="form-label">Perfil</label>
+        <select class="form-control" formControlName="role">
+          <option value="" disabled selected>- Selecione</option>
+          <option value="TREASURER">Tesoureiro</option>
+          <option value="BOARD">Conselho Fiscal</option>
+        </select>
+      </div>
+
+      <button type="submit" class="btn btn-primary auth-submit-btn w-100" [disabled]="form.invalid">
+        <mat-icon fontIcon="person_add" class="me-2"></mat-icon>
+        Registrar
+      </button>
+    </form>
+  </div>
+</div>
