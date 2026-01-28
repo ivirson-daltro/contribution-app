@@ -1,3 +1,22 @@
+.confirm-dialog-title {
+  margin: 0;
+  font-weight: 500;
+  font-size: 1.5rem;
+}
+
+.confirm-dialog-subtitle {
+  margin: 0;
+  color: #6c757d;
+}
+
+[mat-dialog-actions] {
+  padding-top: 16px;
+}
+
+button + button {
+  margin-left: 8px;
+}
+
 .btn {
   display: inline-flex;
   align-items: center;
@@ -10,6 +29,7 @@
 .submit-button {
   border-radius: 0.625rem;
   background-color: #0b2454;
+  color: #fff;
   font-weight: 600;
 }
 

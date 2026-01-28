@@ -60,6 +60,27 @@
     </div>
   </div>
 
+  <div class="col-12 mb-4">
+    <mat-card class="panel h-100">
+      <h2 class="panel-title mb-3">Formas de Pagamento</h2>
+      <div class="row">
+        @for (item of dashboardSummary?.contributionsByPaymentMethod; track $index) {
+          <div class="col-12 col-lg-6">
+            <div class="payment-card mb-2 py-3">
+              <div>
+                <div class="payment-title">{{ item.type }}</div>
+                <div class="payment-subtitle">{{ item.description }}</div>
+              </div>
+              <div class="payment-amount">
+                {{ item.total | currency: 'BRL' : 'symbol' : '1.2-2' : 'pt-BR' }}
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+    </mat-card>
+  </div>
+
   <!-- Gráficos -->
   <div class="row g-3 mb-4">
     <div class="col-12 col-lg-6">
@@ -102,39 +123,6 @@
           [lastYear]="dashboardSummary?.lastYearContributionsByMonth"
         />
       </mat-card>
-    </div>
-
-    <div class="col-12">
-      <mat-card class="panel h-100">
-        <h2 class="panel-title mb-3">Formas de Pagamento</h2>
-
-        <div class="row">
-          @for (item of dashboardSummary?.contributionsByPaymentMethod; track $index) {
-            <div class="col-12 col-lg-6">
-              <div class="payment-card mb-2 py-3">
-                <div>
-                  <div class="payment-title">{{ item.type }}</div>
-                  <div class="payment-subtitle">{{ item.description }}</div>
-                </div>
-                <div class="payment-amount">
-                  {{ item.total | currency: 'BRL' : 'symbol' : '1.2-2' : 'pt-BR' }}
-                </div>
-              </div>
-            </div>
-          }
-        </div>
-      </mat-card>
-    </div>
-
-    <!-- Tabela de contribuições recentes -->
-    <div class="row g-3">
-      <div class="col-12">
-        <mat-card class="panel">
-          <h2 class="panel-title mb-3">Contribuições Recentes</h2>
-
-          <app-list-contributions></app-list-contributions
-        ></mat-card>
-      </div>
     </div>
   </div>
 </div>

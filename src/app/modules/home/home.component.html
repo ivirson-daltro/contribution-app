@@ -11,17 +11,34 @@
     </div>
 
     <nav class="layout-sidenav__menu">
-      <button mat-button class="layout-sidenav__item layout-sidenav__item--active" color="primary">
+      <button
+        mat-button
+        class="layout-sidenav__item"
+        color="primary"
+        routerLink="/"
+        routerLinkActive="layout-sidenav__item--active"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
         <mat-icon>space_dashboard</mat-icon>
         <span>Dashboard</span>
       </button>
-      <button mat-button class="layout-sidenav__item" (click)="openNewContribution()">
-        <mat-icon>add</mat-icon>
-        <span>Nova Contribuição</span>
+      <button
+        mat-button
+        class="layout-sidenav__item"
+        routerLink="contributions"
+        routerLinkActive="layout-sidenav__item--active"
+      >
+        <mat-icon>list</mat-icon>
+        <span>Contribuições</span>
       </button>
-      <button mat-button class="layout-sidenav__item" (click)="openNewMember()">
-        <mat-icon>add</mat-icon>
-        <span>Novo Membro</span>
+      <button
+        mat-button
+        class="layout-sidenav__item"
+        routerLink="members"
+        routerLinkActive="layout-sidenav__item--active"
+      >
+        <mat-icon>people</mat-icon>
+        <span>Membros</span>
       </button>
       <!-- <button mat-button class="layout-sidenav__item">
         <mat-icon>list</mat-icon>
@@ -60,7 +77,7 @@
     </header>
 
     <main class="layout-main">
-      <app-dashboard></app-dashboard>
+      <router-outlet></router-outlet>
     </main>
   </mat-sidenav-content>
 </mat-sidenav-container>

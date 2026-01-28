@@ -24,3 +24,21 @@ body {
   margin: 0;
   height: 100%;
 }
+
+.rounded-button {
+  border-radius: 50%;
+  background-color: #0b2454;
+  color: #ffffff;
+  box-shadow: 10px 15px 30px rgba(11, 36, 84, 0.2);
+  width: 2rem;
+  height: 2rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  mat-icon {
+    font-size: 1rem;
+    height: 1rem;
+    width: 1rem;
+  }
+}

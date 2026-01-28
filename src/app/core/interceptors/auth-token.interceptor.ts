@@ -1,13 +1,20 @@
-import { HttpInterceptorFn } from '@angular/common/http';
+import { HttpErrorResponse, HttpInterceptorFn } from '@angular/common/http';
 import { inject } from '@angular/core';
+import { Router } from '@angular/router';
+import { catchError, throwError } from 'rxjs';
 import { AuthService } from '../../modules/auth/services/auth.service';
+import { ToastService } from '../../shared/services/toast.service';
 
 export const authTokenInterceptor: HttpInterceptorFn = (req, next) => {
   const authService = inject(AuthService);
+  const router = inject(Router);
+  const toastService = inject(ToastService);
   const token = authService.getToken();
 
+  const isAuthRequest = req.url.includes('/auth/login') || req.url.includes('/auth/users');
+
   // Não adiciona token na requisição de login
-  if (req.url.includes('/auth/login')) {
+  if (isAuthRequest) {
     return next(req);
   }
 
@@ -21,5 +28,20 @@ export const authTokenInterceptor: HttpInterceptorFn = (req, next) => {
     },
   });
 
-  return next(authReq);
+  return next(authReq).pipe(
+    catchError((error: HttpErrorResponse) => {
+      if (error.status === 401) {
+        authService.logout();
+        toastService.error('Sessão expirada. Faça login novamente.');
+
+        router.navigate(['/auth/login'], {
+          queryParams: { returnUrl: router.url },
+        });
+      } else if (error.status === 403) {
+        toastService.warning('Você não tem permissão para acessar este recurso.');
+      }
+
+      return throwError(() => error);
+    }),
+  );
 };

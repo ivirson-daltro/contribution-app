@@ -1,0 +1,12 @@
+<h2 class="confirm-dialog-title" mat-dialog-title>{{ title }}</h2>
+
+<div mat-dialog-content>
+  <p class="confirm-modal-subtitle">{{ subtitle }}</p>
+</div>
+
+<div mat-dialog-actions align="end">
+  <button mat-button class="btn cancel-button" (click)="onCancel()">{{ cancelLabel }}</button>
+  <button mat-raised-button class="btn btn-primary submit-button" (click)="onConfirm()">
+    {{ confirmLabel }}
+  </button>
+</div>
