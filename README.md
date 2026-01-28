@@ -79,7 +79,7 @@ No `package.json` você encontra os principais scripts:
 - `npm start` – inicia o servidor de desenvolvimento (`ng serve`).
 - `npm run build` – build de produção (`ng build`).
 - `npm run watch` – build em modo watch.
-- `npm test` – executa os testes unitários (Vitest).
+- `npm test` – executa os testes unitários (`ng test`).
 
 ---
 
@@ -98,10 +98,10 @@ Certifique‑se de configurar `apiUrl` corretamente para apontar para o backend.
 
 Algumas pastas principais do projeto:
 
-- `src/app/auth` – telas de login/registro, serviço de autenticação, guard e interceptor de token.
-- `src/app/home` – dashboard, tabela de contribuições, diálogos e serviços de dados.
-- `src/app/contributions` – componentes e serviços de contribuições.
-- `src/app/members` – componentes de cadastro de membros.
+- `src/app/modules/auth` – telas de login/registro, serviço de autenticação, guard e interceptor de token.
+- `src/app/modules/home` – dashboard, tabela de contribuições, diálogos e serviços de dados.
+- `src/app/modules/contributions` – componentes e serviços de contribuições.
+- `src/app/modules/members` – componentes de cadastro de membros.
 - `src/app/core` – interceptors e serviços compartilhados (ex.: loading).
 - `src/app/shared` – componentes e serviços reutilizáveis (ex.: toast).
 
