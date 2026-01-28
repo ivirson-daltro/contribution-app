@@ -10,22 +10,25 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Chart, ChartConfiguration, ChartOptions, registerables } from 'chart.js';
-import { MonthlyContribution } from '../../models/dashboard-data.model';
+import { PaymentMethodPeriodTotals } from '../../../../models/dashboard-data.model';
+import { Observable } from 'rxjs';
 
 Chart.register(...registerables);
 
 @Component({
-  selector: 'app-monthly-contributions-chart',
+  selector: 'app-payment-method-chart',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './monthly-contributions-chart.component.html',
-  styleUrls: ['./monthly-contributions-chart.component.scss'],
+  templateUrl: './payment-method-chart.component.html',
+  styleUrls: ['./payment-method-chart.component.scss'],
 })
-export class MonthlyContributionsChartComponent implements AfterViewInit, OnChanges, OnDestroy {
+export class PaymentMethodChartComponent implements AfterViewInit, OnChanges, OnDestroy {
   @ViewChild('chartCanvas') chartCanvas?: ElementRef<HTMLCanvasElement>;
 
-  @Input() currentYear: MonthlyContribution[] | null | undefined;
-  @Input() lastYear: MonthlyContribution[] | null | undefined;
+  @Input() totals: PaymentMethodPeriodTotals[] | null | undefined;
+  @Input() period: 'weekly' | 'monthly' = 'monthly';
+
+  dashboardSummaryChart?: PaymentMethodPeriodTotals[];
 
   private chart?: Chart<'bar'>;
 
@@ -34,10 +37,10 @@ export class MonthlyContributionsChartComponent implements AfterViewInit, OnChan
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    const currentChanged = !!changes['currentYear'] && !changes['currentYear'].firstChange;
-    const lastChanged = !!changes['lastYear'] && !changes['lastYear'].firstChange;
+    const totalsChanged = !!changes['totals'] && !changes['totals'].firstChange;
+    const periodChanged = !!changes['period'] && !changes['period'].firstChange;
 
-    if (currentChanged || lastChanged) {
+    if (totalsChanged || periodChanged) {
       this.updateChart();
     }
   }
@@ -76,52 +79,37 @@ export class MonthlyContributionsChartComponent implements AfterViewInit, OnChan
   }
 
   private buildData() {
-    const current = this.currentYear ?? [];
-    const last = this.lastYear ?? [];
+    const items = this.totals ?? [];
 
-    const labels = current.length ? current.map((m) => m.month) : last.map((m) => m.month);
+    const labels = ['Entradas'];
 
-    const getEntry = (source: MonthlyContribution[], month: string): MonthlyContribution | null => {
-      return source.find((m) => m.month === month) ?? null;
-    };
+    const currencyFormatter = new Intl.NumberFormat('pt-BR', {
+      style: 'currency',
+      currency: 'BRL',
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
 
-    const currentPix = labels.map((month) => getEntry(current, month)?.totalPix ?? 0);
-    const currentCash = labels.map((month) => getEntry(current, month)?.totalCash ?? 0);
-    const lastPix = labels.map((month) => getEntry(last, month)?.totalPix ?? 0);
-    const lastCash = labels.map((month) => getEntry(last, month)?.totalCash ?? 0);
+    const datasets = items.map((item) => {
+      const value = this.period === 'weekly' ? item.weeklyTotal : item.monthlyTotal;
+
+      return {
+        label: item.type,
+        data: [value],
+        backgroundColor: this.getColorForType(item.type),
+        borderWidth: 0,
+        datalabels: {
+          anchor: 'center',
+          align: 'center',
+          color: '#ffffff',
+          formatter: (val: number) => currencyFormatter.format(val),
+        },
+      } as any;
+    });
 
     return {
       labels,
-      datasets: [
-        {
-          label: 'Espécie (ano atual)',
-          data: currentCash,
-          backgroundColor: '#2563eb',
-          borderWidth: 0,
-          stack: 'current',
-        },
-        {
-          label: 'PIX (ano atual)',
-          data: currentPix,
-          backgroundColor: '#f97316',
-          borderWidth: 0,
-          stack: 'current',
-        },
-        {
-          label: 'Espécie (ano anterior)',
-          data: lastCash,
-          backgroundColor: '#303030',
-          borderWidth: 0,
-          stack: 'last',
-        },
-        {
-          label: 'PIX (ano anterior)',
-          data: lastPix,
-          backgroundColor: '#888888',
-          borderWidth: 0,
-          stack: 'last',
-        },
-      ],
+      datasets,
     };
   }
 
@@ -162,5 +150,19 @@ export class MonthlyContributionsChartComponent implements AfterViewInit, OnChan
     };
 
     return options;
+  }
+
+  private getColorForType(type: string): string {
+    const normalized = type.toLowerCase();
+
+    if (normalized.includes('pix')) {
+      return '#f97316'; // laranja
+    }
+
+    if (normalized.includes('esp')) {
+      return '#2563eb'; // azul
+    }
+
+    return '#64748b'; // cinza padrão
   }
 }

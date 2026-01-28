@@ -1,20 +1,15 @@
-import { AsyncPipe, CurrencyPipe, DatePipe } from '@angular/common';
+import { AsyncPipe, CurrencyPipe } from '@angular/common';
 import { Component, inject, ViewChild } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { Observable } from 'rxjs';
-import {
-  DashboardSummary,
-  MonthlyContribution,
-  PaymentMethodPeriodTotals,
-} from '../../models/dashboard-data.model';
-import { Contribution } from '../../models/domain.model';
+import { ListContributionsComponent } from '../../../contributions/components/list/list-contributions.component';
+import { DashboardSummary, PaymentMethodPeriodTotals } from '../../models/dashboard-data.model';
 import { DashboardService } from '../../services/dashboard.service';
-import { PaymentMethodChartComponent } from '../payment-method-chart/payment-method-chart.component';
-import { MonthlyContributionsChartComponent } from '../monthly-contributions-chart/monthly-contributions-chart.component';
-import { RecentContributionsTableComponent } from '../recent-contributions-table/recent-contributions-table.component';
-import { SummaryCardComponent } from '../summary-card/summary-card.component';
+import { MonthlyContributionsChartComponent } from './components/monthly-contributions-chart/monthly-contributions-chart.component';
+import { PaymentMethodChartComponent } from './components/payment-method-chart/payment-method-chart.component';
+import { SummaryCardComponent } from './components/summary-card/summary-card.component';
 
 @Component({
   selector: 'app-dashboard',
@@ -28,7 +23,7 @@ import { SummaryCardComponent } from '../summary-card/summary-card.component';
     SummaryCardComponent,
     PaymentMethodChartComponent,
     MonthlyContributionsChartComponent,
-    RecentContributionsTableComponent,
+    ListContributionsComponent,
   ],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss'],
@@ -36,8 +31,8 @@ import { SummaryCardComponent } from '../summary-card/summary-card.component';
 export class DashboardComponent {
   private readonly dashboardService = inject(DashboardService);
 
-  @ViewChild(RecentContributionsTableComponent)
-  recentContributionsTable?: RecentContributionsTableComponent;
+  @ViewChild(ListContributionsComponent)
+  recentContributionsTable?: ListContributionsComponent;
 
   dashboardSummary$: Observable<DashboardSummary> = this.dashboardService.getDashboardSummary();
   dashboardSummaryChart$?: Observable<PaymentMethodPeriodTotals[]> =
