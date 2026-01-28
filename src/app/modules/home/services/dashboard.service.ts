@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { environment } from '../../../environments/environment';
+import { environment } from '../../../../environments/environment';
 import { DashboardSummary, PaymentMethodPeriodTotals } from '../models/dashboard-data.model';
 import { Contribution, PaginatedResponse } from '../models/domain.model';
 

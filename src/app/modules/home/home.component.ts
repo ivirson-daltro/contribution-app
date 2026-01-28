@@ -5,13 +5,13 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { Router } from '@angular/router';
+import { environment } from '../../../environments/environment';
+import { User } from '../auth/models/user.model';
 import { AuthService } from '../auth/services/auth.service';
 import { AddContributionComponent } from '../contributions/components/add/add-contributions.component';
 import { AddMembersComponent } from '../members/components/cadastrar/add-members.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
-import { Router } from '@angular/router';
-import { User } from '../auth/models/user.model';
-import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-home',

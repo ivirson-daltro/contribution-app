@@ -2,10 +2,10 @@ import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
-import { AuthService } from '../../services/auth.service';
-import { first } from 'rxjs';
-import { ToastService } from '../../../shared/services/toast.service';
 import { Router } from '@angular/router';
+import { first } from 'rxjs';
+import { ToastService } from '../../../../shared/services/toast.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-register',

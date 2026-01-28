@@ -1,59 +1,126 @@
-# App
+## Gestão de Contribuições – Front‑end
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.0.4.
+Aplicação Angular para gestão de contribuições financeiras de uma igreja, com dashboard, gráficos, filtros, autenticação e emissão de relatórios em PDF.
 
-## Development server
+---
 
-To start a local development server, run:
+## Funcionalidades
+
+- **Autenticação**
+  - Tela de login com opção de salvar e‑mail do usuário.
+  - Tela de registro de usuário.
+  - Proteção de rotas via guard; redireciona para `/auth/login` quando não autenticado.
+- **Dashboard financeiro**
+  - Cards de resumo (totais, comparativos).
+  - Gráfico por forma de pagamento (PIX, espécie etc.).
+  - Gráfico mensal comparando ano atual x anterior.
+- **Contribuições**
+  - Listagem paginada e ordenável de contribuições recentes.
+  - Filtros por membro, tipo de contribuição, forma de pagamento e período.
+  - Cadastro de contribuições em modal, com máscara/normalização de valores em BRL.
+  - Cadastro de membros em modal.
+- **Relatórios**
+  - Geração de relatório semanal em PDF a partir de um intervalo de datas.
+- **UX**
+  - Toasts (snackbars) de sucesso, erro e aviso, coloridos por tipo.
+  - Loading global enquanto requisições HTTP estão em andamento.
+
+---
+
+## Stack e dependências
+
+- **Framework:** Angular 21 (standalone components)
+- **UI:** Angular Material, Bootstrap 5
+- **Gráficos:** Chart.js
+- **HTTP:** `HttpClient` com interceptors (loading + token JWT)
+- **Formulários:** Reactive Forms
+- **Internacionalização:** `pt-BR` para datas e moeda (BRL)
+
+Veja todas as dependências em `package.json`.
+
+---
+
+## Pré‑requisitos
+
+- Node.js (versão compatível com Angular 21)
+- npm (usado como package manager)
+- Backend da aplicação em execução, com `environment.apiUrl` apontando para ele
+
+---
+
+## Como rodar o projeto
+
+Instalar dependências:
 
 ```bash
+npm install
+```
+
+Subir o servidor de desenvolvimento (porta padrão 4200):
+
+```bash
+npm start
+# ou
 ng serve
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+Depois, acesse em seu navegador:
 
-## Code scaffolding
+- http://localhost:4200/
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+O hot‑reload será aplicado sempre que você salvar alterações nos arquivos fonte.
 
-```bash
-ng generate component component-name
-```
+---
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+## Scripts disponíveis
 
-```bash
-ng generate --help
-```
+No `package.json` você encontra os principais scripts:
 
-## Building
+- `npm start` – inicia o servidor de desenvolvimento (`ng serve`).
+- `npm run build` – build de produção (`ng build`).
+- `npm run watch` – build em modo watch.
+- `npm test` – executa os testes unitários (Vitest).
 
-To build the project run:
+---
 
-```bash
-ng build
-```
+## Ambientes
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+Os arquivos de ambiente ficam em `src/environments/`:
 
-## Running unit tests
+- `environment.ts` – configurações padrão (produção).
+- `environment.development.ts` – configurações para desenvolvimento.
 
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+Certifique‑se de configurar `apiUrl` corretamente para apontar para o backend.
 
-```bash
-ng test
-```
+---
 
-## Running end-to-end tests
+## Estrutura básica
 
-For end-to-end (e2e) testing, run:
+Algumas pastas principais do projeto:
 
-```bash
-ng e2e
-```
+- `src/app/auth` – telas de login/registro, serviço de autenticação, guard e interceptor de token.
+- `src/app/home` – dashboard, tabela de contribuições, diálogos e serviços de dados.
+- `src/app/contributions` – componentes e serviços de contribuições.
+- `src/app/members` – componentes de cadastro de membros.
+- `src/app/core` – interceptors e serviços compartilhados (ex.: loading).
+- `src/app/shared` – componentes e serviços reutilizáveis (ex.: toast).
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+---
 
-## Additional Resources
+## Convenções e boas práticas
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+- Uso de **standalone components** no Angular 21.
+- Serviços injetáveis via `inject()` dentro das classes.
+- Interceptores HTTP para responsabilidades transversais (loading, token JWT).
+- Formulários reativos para telas de autenticação e cadastros.
+- Estilização combinando Angular Material e classes utilitárias do Bootstrap.
+
+---
+
+## Próximos passos sugeridos
+
+- Documentar os endpoints esperados do backend (login, contribuições, relatórios).
+- Adicionar exemplos de payloads de requisição/resposta.
+- Incluir capturas de tela do dashboard e telas de autenticação.
+
+Este README descreve apenas o front‑end. Consulte o repositório do backend para detalhes de API e geração dos relatórios em PDF.

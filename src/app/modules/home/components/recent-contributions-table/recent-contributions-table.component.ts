@@ -1,17 +1,17 @@
-import { Component, inject, OnInit } from '@angular/core';
-import { DashboardService } from '../../services/dashboard.service';
-import { Contribution, ContributionType, Member, PaymentMethod } from '../../models/domain.model';
-import { first, Observable } from 'rxjs';
-import { MatCardModule } from '@angular/material/card';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { AsyncPipe, CurrencyPipe, DatePipe } from '@angular/common';
-import { ContributionsService } from '../../../contributions/services/contributions.service';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormGroup, FormsModule } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MatIconModule } from '@angular/material/icon';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { first, Observable } from 'rxjs';
+import { ToastService } from '../../../../shared/services/toast.service';
+import { ContributionsService } from '../../../contributions/services/contributions.service';
+import { Contribution, ContributionType, Member, PaymentMethod } from '../../models/domain.model';
+import { DashboardService } from '../../services/dashboard.service';
 import { WeeklyReportDialogComponent } from '../weekly-report-dialog/weekly-report-dialog.component';
-import { ToastService } from '../../../shared/services/toast.service';
 
 @Component({
   selector: 'app-recent-contributions-table',
