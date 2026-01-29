@@ -1,0 +1,1 @@
+import"./chunk-2NFLSA4Y.js";var t=[{path:"login",loadComponent:()=>import("./chunk-4DBHBCYM.js").then(o=>o.LoginComponent)},{path:"register",loadComponent:()=>import("./chunk-KJ2UFG26.js").then(o=>o.RegisterComponent),canActivate:[]}];export{t as AUTH_ROUTES};
