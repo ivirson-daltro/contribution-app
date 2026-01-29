@@ -33,3 +33,10 @@
     color: #6b7280;
   }
 }
+
+@media (max-width: 762px) {
+  .btn-print {
+    height: 4rem !important;
+    padding: 1rem;
+  }
+}

@@ -1,12 +1,14 @@
 <div class="contributions container-fluid py-4">
-  <div class="d-flex justify-content-between align-items-center mb-4">
-    <div>
+  <div class="row align-items-center mb-4">
+    <div class="col-12 col-lg">
       <h1 class="h4 mb-1 fw-semibold">Contribuições</h1>
       <p class="text-muted small mb-0">Visualize e gerencie todas as contribuições</p>
     </div>
-    <button type="button" class="btn btn-primary submit-button" (click)="openNewContribution()">
-      <mat-icon fontIcon="add" class="submit-icon"></mat-icon> Nova contribuição
-    </button>
+    <div class="col-12 col-lg-auto">
+      <button type="button" class="btn btn-primary submit-button" (click)="openNewContribution()">
+        <mat-icon fontIcon="add" class="submit-icon"></mat-icon> Nova contribuição
+      </button>
+    </div>
   </div>
 
   <!-- Filtros -->
@@ -16,7 +18,7 @@
         <mat-icon fontIcon="filter_alt" class="me-2"></mat-icon> Filtros
       </h2>
       <div class="row mb-2">
-        <div class="col">
+        <div class="col-12 col-lg mb-3">
           <label for="memberId" class="form-label">Membro</label>
           <select class="form-control" [(ngModel)]="memberId">
             <option [value]="null" disabled selected>- Selecione</option>
@@ -26,7 +28,7 @@
           </select>
         </div>
 
-        <div class="col">
+        <div class="col-12 col-lg mb-3">
           <label for="contributionTypeId" class="form-label">Tipo</label>
           <select class="form-control" [(ngModel)]="contributionTypeId">
             <option [value]="null" disabled selected>- Selecione</option>
@@ -36,7 +38,7 @@
           </select>
         </div>
 
-        <div class="col">
+        <div class="col-12 col-lg mb-3">
           <label for="paymentMethodId" class="form-label">Pagamento</label>
           <select class="form-control" [(ngModel)]="paymentMethodId">
             <option [value]="null" disabled selected>- Selecione</option>
@@ -46,24 +48,28 @@
           </select>
         </div>
 
-        <div class="col">
+        <div class="col-12 col-lg mb-3">
           <label for="startDate" class="form-label">Data inicial</label>
           <input type="date" class="form-control" [(ngModel)]="startDate" />
         </div>
 
-        <div class="col">
+        <div class="col-12 col-lg mb-3">
           <label for="endDate" class="form-label">Data Final</label>
           <input type="date" class="form-control" [(ngModel)]="endDate" />
         </div>
       </div>
 
       <div class="row justify-content-between">
-        <div class="col-4">
-          <button type="button" class="btn btn-primary submit-button" (click)="getWeeklyReport()">
+        <div class="col-12 col-lg-4">
+          <button
+            type="button"
+            class="btn btn-primary submit-button btn-print"
+            (click)="getWeeklyReport()"
+          >
             <mat-icon fontIcon="print" class="submit-icon"></mat-icon> Imprimir Relatório da semana
           </button>
         </div>
-        <div class="col-4 text-end">
+        <div class="col-12 col-lg-4 text-end">
           <button type="button" class="btn cancel-button" (click)="limpar()">
             <mat-icon fontIcon="clear" class="submit-icon"></mat-icon> Limpar
           </button>

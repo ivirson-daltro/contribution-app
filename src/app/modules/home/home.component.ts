@@ -27,6 +27,13 @@ import { AuthService } from '../auth/services/auth.service';
   styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent {
+  isSidenavOpen = window.innerWidth > 991;
+
+  closeSidenavOnMobile(): void {
+    if (window.innerWidth <= 991) {
+      this.isSidenavOpen = false;
+    }
+  }
   private readonly dialog = inject(MatDialog);
   private readonly authService = inject(AuthService);
   private readonly router = inject(Router);
@@ -41,5 +48,9 @@ export class HomeComponent {
   logout(): void {
     this.authService.logout();
     this.router.navigate(['/auth/login']);
+  }
+
+  toggleSidenav(): void {
+    this.isSidenavOpen = !this.isSidenavOpen;
   }
 }
