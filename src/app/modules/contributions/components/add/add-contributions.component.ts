@@ -1,5 +1,6 @@
 import { AsyncPipe } from '@angular/common';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, Inject } from '@angular/core';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
@@ -29,12 +30,32 @@ export class AddContributionComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private dialogRef: MatDialogRef<AddContributionComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any,
   ) {}
 
   ngOnInit(): void {
     this.buildForm();
     this.loadContributionTypes();
     this.setupMemberValidation();
+
+    if (this.data) {
+      // Aguarda todos os selects carregarem antes de preencher
+      Promise.all([
+        this.members$.pipe(first()).toPromise(),
+        this.contributionTypes$.pipe(first()).toPromise(),
+        this.paymentMethods$.pipe(first()).toPromise(),
+      ]).then(() => {
+        this.form.patchValue({
+          memberId: this.data.memberId ?? '',
+          contributionTypeId: this.data.contributionTypeId ?? '',
+          paymentMethodId: this.data.paymentMethodId ?? '',
+          amount: this.data.amount ?? '',
+          date: this.data.date ? this.data.date.substring(0, 10) : '',
+          observation: this.data.observation ?? '',
+        });
+        this.formatAmount();
+      });
+    }
   }
 
   buildForm(): void {
@@ -55,22 +76,37 @@ export class AddContributionComponent implements OnInit {
   saveContribution(): void {
     const raw = this.form.getRawValue();
     const amount = this.parseAmount(raw.amount);
-
     const contributionData = {
       ...raw,
       amount,
     };
-    this.contributionsService
-      .saveContribution(contributionData)
-      .pipe(first())
-      .subscribe({
-        next: () => {
-          this.dialogRef.close(true);
-        },
-        error: (error) => {
-          console.error('Error saving contribution:', error);
-        },
-      });
+    if (this.data && this.data.id) {
+      // Edição
+      this.contributionsService
+        .updateContribution(this.data.id, contributionData)
+        .pipe(first())
+        .subscribe({
+          next: () => {
+            this.dialogRef.close(true);
+          },
+          error: (error) => {
+            console.error('Error updating contribution:', error);
+          },
+        });
+    } else {
+      // Novo
+      this.contributionsService
+        .saveContribution(contributionData)
+        .pipe(first())
+        .subscribe({
+          next: () => {
+            this.dialogRef.close(true);
+          },
+          error: (error) => {
+            console.error('Error saving contribution:', error);
+          },
+        });
+    }
   }
 
   formatAmount(): void {

@@ -1,12 +1,9 @@
 <div class="contributions container-fluid py-4">
-  <div class="d-flex justify-content-between align-items-center">
+  <div class="d-flex justify-content-between align-items-center mb-4">
     <div>
       <h1 class="h4 mb-1 fw-semibold">Membros</h1>
       <p class="text-muted small mb-0">Visualize e gerencie os membros cadastrados</p>
     </div>
-  </div>
-
-  <div class="mb-4">
     <button type="button" class="btn btn-primary submit-button" (click)="openNewMember()">
       <mat-icon fontIcon="add" class="submit-icon"></mat-icon> Novo Membro
     </button>
@@ -36,7 +33,7 @@
             @if (members.length === 0) {
               <tr>
                 <td colspan="6" class="text-center text-muted small py-4">
-                  Nenhuma contribuição encontrada.
+                  Nenhum membro encontrado.
                 </td>
               </tr>
             } @else {
@@ -44,7 +41,11 @@
                 <tr>
                   <td>{{ item.name }}</td>
                   <td class="text-center">
-                    <button class="rounded-button me-1" aria-label="Editar Membro">
+                    <button
+                      class="rounded-button me-1"
+                      aria-label="Editar Membro"
+                      (click)="editMember(item.id)"
+                    >
                       <mat-icon fontIcon="edit"></mat-icon>
                     </button>
                     <button

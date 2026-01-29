@@ -13,6 +13,7 @@ import { DashboardService } from '../home/services/dashboard.service';
 import { AddContributionComponent } from './components/add/add-contributions.component';
 import { WeeklyReportDialogComponent } from './components/weekly-report-dialog/weekly-report-dialog.component';
 import { ContributionsService } from './services/contributions.service';
+import { ConfirmModalComponent } from '../../shared/components/confirm-modal/confirm-modal.component';
 
 @Component({
   selector: 'app-contributions',
@@ -199,6 +200,63 @@ export class ContributionsComponent implements OnInit {
               this.toastService.error('Erro ao gerar relatório semanal.');
             },
           });
+      });
+  }
+
+  editContribution(contributionId: string): void {
+    this.contributionsService
+      .getContributionById(contributionId)
+      .pipe(first())
+      .subscribe({
+        next: (contribution) => {
+          const dialogRef = this.dialog.open(AddContributionComponent, {
+            width: '720px',
+            maxWidth: '95vw',
+            autoFocus: false,
+            data: contribution,
+          });
+          dialogRef.afterClosed().subscribe((result: unknown) => {
+            if (result) {
+              this.getContributionList();
+            }
+          });
+        },
+        error: () => {
+          this.toastService.error('Erro ao buscar dados da contribuição.');
+        },
+      });
+  }
+
+  deleteContribution(contributionId: string): void {
+    const dialogRef = this.dialog.open(ConfirmModalComponent, {
+      width: '400px',
+      data: {
+        title: 'Excluir Contribuição',
+        subtitle: 'Tem certeza que deseja excluir esta contribuição?',
+        confirmLabel: 'Excluir',
+        cancelLabel: 'Cancelar',
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((confirmed: boolean) => {
+      if (confirmed) {
+        this.onDeleteContribution(contributionId);
+      }
+    });
+  }
+
+  onDeleteContribution(contributionId: string): void {
+    this.contributionsService
+      .deleteContribution(contributionId)
+      .pipe(first())
+      .subscribe({
+        next: () => {
+          this.toastService.success('Contribuição excluída com sucesso.');
+          this.getContributionList();
+        },
+        error: () => {
+          this.toastService.error('Erro ao excluir a contribuição. Tente novamente mais tarde.');
+        },
       });
   }
 }

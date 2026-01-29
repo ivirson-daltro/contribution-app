@@ -73,6 +73,18 @@ export class ContributionsService {
     return this.httpClient.post<void>(`${environment.apiUrl}/contributions`, contributionData);
   }
 
+  getContributionById(id: string): Observable<Contribution> {
+    return this.httpClient.get<Contribution>(`${environment.apiUrl}/contributions/${id}`);
+  }
+
+  updateContribution(id: string, contributionData: Contribution): Observable<void> {
+    return this.httpClient.put<void>(`${environment.apiUrl}/contributions/${id}`, contributionData);
+  }
+
+  deleteContribution(id: string): Observable<void> {
+    return this.httpClient.delete<void>(`${environment.apiUrl}/contributions/${id}`);
+  }
+
   getWeeklyReport(startDate: string, endDate: string): Observable<Blob> {
     const params = new HttpParams().set('startDate', startDate).set('endDate', endDate);
 

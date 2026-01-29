@@ -1,6 +1,6 @@
-import { Component, inject, Input } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
-import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-confirm-modal',
@@ -11,11 +11,28 @@ import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 })
 export class ConfirmModalComponent {
   private readonly dialogRef = inject(MatDialogRef<ConfirmModalComponent>);
+  private readonly data = inject(MAT_DIALOG_DATA) as {
+    title?: string;
+    subtitle?: string;
+    confirmLabel?: string;
+    cancelLabel?: string;
+  };
 
-  @Input() title: string = 'Confirmação';
-  @Input() subtitle: string = 'Tem certeza que deseja prosseguir?';
-  @Input() confirmLabel: string = 'Confirmar';
-  @Input() cancelLabel: string = 'Cancelar';
+  get title(): string {
+    return this.data.title ?? 'Confirmação';
+  }
+
+  get subtitle(): string {
+    return this.data.subtitle ?? 'Tem certeza que deseja prosseguir?';
+  }
+
+  get confirmLabel(): string {
+    return this.data.confirmLabel ?? 'Confirmar';
+  }
+
+  get cancelLabel(): string {
+    return this.data.cancelLabel ?? 'Cancelar';
+  }
 
   onConfirm(): void {
     this.dialogRef.close(true);

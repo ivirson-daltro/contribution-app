@@ -107,6 +107,30 @@ export class MembersComponent implements OnInit {
     this.getMemberList(0, this.pageSize);
   }
 
+  editMember(memberId: string): void {
+    this.membersService
+      .getById(memberId)
+      .pipe(first())
+      .subscribe({
+        next: (member) => {
+          const dialogRef = this.dialog.open(AddMembersComponent, {
+            width: '720px',
+            maxWidth: '95vw',
+            autoFocus: false,
+            data: member,
+          });
+          dialogRef.afterClosed().subscribe((result: unknown) => {
+            if (result) {
+              this.getMemberList();
+            }
+          });
+        },
+        error: () => {
+          this.toastService.error('Erro ao buscar dados do membro.');
+        },
+      });
+  }
+
   deleteMember(memberId: string): void {
     const dialogRef = this.dialog.open(ConfirmModalComponent, {
       width: '400px',
