@@ -1,5 +1,4 @@
-import { AsyncPipe, CurrencyPipe, DatePipe } from '@angular/common';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormGroup, FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -7,14 +6,14 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { first } from 'rxjs';
-import { ToastService } from '../../shared/services/toast.service';
-import { Member } from '../home/models/domain.model';
-import { AddMembersComponent } from './components/add/add-members.component';
-import { MembersService } from './services/members.service';
 import { ConfirmModalComponent } from '../../shared/components/confirm-modal/confirm-modal.component';
+import { ToastService } from '../../shared/services/toast.service';
+import { User } from '../auth/models/user.model';
+import { AddUsersComponent } from './components/add/add-users.component';
+import { UsersService } from './services/users.service';
 
 @Component({
-  selector: 'app-members',
+  selector: 'app-users',
   imports: [
     MatCardModule,
     MatButtonModule,
@@ -23,29 +22,29 @@ import { ConfirmModalComponent } from '../../shared/components/confirm-modal/con
     MatSnackBarModule,
     FormsModule,
   ],
-  templateUrl: './members.component.html',
-  styleUrls: ['./members.component.scss'],
+  templateUrl: './users.component.html',
+  styleUrls: ['./users.component.scss'],
 })
-export class MembersComponent implements OnInit {
-  private readonly membersService = inject(MembersService);
+export class UsersComponent {
+  private readonly usersService = inject(UsersService);
   private readonly dialog = inject(MatDialog);
   private readonly toastService = inject(ToastService);
 
   form!: FormGroup;
 
-  members: Member[] = [];
-  totalMembers = 0;
+  users: User[] = [];
+  totalUsers = 0;
   pageIndex = 0; // índice baseado em 0
   pageSize = 10;
-  sortBy: 'name' = 'name';
+  sortBy: 'name' | 'email' | 'role' = 'name';
   sortDirection: 'asc' | 'desc' = 'asc';
 
   ngOnInit(): void {
-    this.getMemberList();
+    this.getUserList();
   }
 
-  openNewMember(): void {
-    const dialogRef = this.dialog.open(AddMembersComponent, {
+  openNewUser(): void {
+    const dialogRef = this.dialog.open(AddUsersComponent, {
       width: '720px',
       maxWidth: '95vw',
       autoFocus: false,
@@ -53,33 +52,33 @@ export class MembersComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result: unknown) => {
       if (result) {
-        this.getMemberList();
+        this.getUserList();
       }
     });
   }
 
-  getMemberList(pageIndex: number = this.pageIndex, pageSize: number = this.pageSize): void {
+  getUserList(pageIndex: number = this.pageIndex, pageSize: number = this.pageSize): void {
     const page = pageIndex + 1; // API assumida como 1-based
 
-    this.membersService
-      .getPaginatedMembers(page, pageSize, this.sortBy, this.sortDirection)
+    this.usersService
+      .getPaginatedUsers(page, pageSize, this.sortBy, this.sortDirection)
       .pipe(first())
       .subscribe((res) => {
         if (!res) {
-          this.members = [];
-          this.totalMembers = 0;
+          this.users = [];
+          this.totalUsers = 0;
           return;
         }
 
-        this.members = res.data ?? [];
-        this.totalMembers = res.total ?? 0;
+        this.users = res.data ?? [];
+        this.totalUsers = res.total ?? 0;
         this.pageIndex = (res.page ?? page) - 1;
         this.pageSize = res.limit ?? pageSize;
       });
   }
 
   get totalPages(): number {
-    return this.pageSize > 0 ? Math.ceil(this.totalMembers / this.pageSize) : 0;
+    return this.pageSize > 0 ? Math.ceil(this.totalUsers / this.pageSize) : 0;
   }
 
   get pages(): number[] {
@@ -92,10 +91,10 @@ export class MembersComponent implements OnInit {
     }
 
     this.pageIndex = pageIndex;
-    this.getMemberList(this.pageIndex, this.pageSize);
+    this.getUserList(this.pageIndex, this.pageSize);
   }
 
-  changeSort(field: 'name'): void {
+  changeSort(field: 'name' | 'email' | 'role'): void {
     if (this.sortBy === field) {
       this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
     } else {
@@ -104,42 +103,42 @@ export class MembersComponent implements OnInit {
     }
 
     this.pageIndex = 0;
-    this.getMemberList(0, this.pageSize);
+    this.getUserList(0, this.pageSize);
   }
 
-  editMember(memberId: string): void {
-    this.membersService
-      .getById(memberId)
+  editUser(userId: string): void {
+    this.usersService
+      .getById(userId)
       .pipe(first())
       .subscribe({
-        next: (member) => {
-          const dialogRef = this.dialog.open(AddMembersComponent, {
+        next: (user) => {
+          const dialogRef = this.dialog.open(AddUsersComponent, {
             width: '720px',
             maxWidth: '95vw',
             autoFocus: false,
-            data: member,
+            data: user,
           });
           dialogRef.afterClosed().subscribe((result: unknown) => {
             if (result) {
-              this.getMemberList();
+              this.getUserList();
             }
           });
         },
         error: (error) => {
           this.toastService.error(
             error.error.error || 'Erro desconhecido',
-            'Erro ao buscar dados do membro',
+            'Erro ao buscar dados do usuário',
           );
         },
       });
   }
 
-  deleteMember(memberId: string): void {
+  deleteUser(userId: string): void {
     const dialogRef = this.dialog.open(ConfirmModalComponent, {
       width: '400px',
       data: {
-        title: 'Excluir Membro',
-        subtitle: 'Tem certeza que deseja excluir este membro?',
+        title: 'Excluir Usuário',
+        subtitle: 'Tem certeza que deseja excluir este usuário?',
         confirmLabel: 'Excluir',
         cancelLabel: 'Cancelar',
       },
@@ -147,24 +146,24 @@ export class MembersComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((confirmed: boolean) => {
       if (confirmed) {
-        this.onDeleteMember(memberId);
+        this.onDeleteUser(userId);
       }
     });
   }
 
-  onDeleteMember(memberId: string): void {
-    this.membersService
-      .deleteMember(memberId)
+  onDeleteUser(userId: string): void {
+    this.usersService
+      .deleteUser(userId)
       .pipe(first())
       .subscribe({
         next: () => {
-          this.toastService.success('Membro excluído com sucesso.');
-          this.getMemberList();
+          this.toastService.success('Usuário excluído com sucesso.');
+          this.getUserList();
         },
         error: (error) => {
           this.toastService.error(
             error.error.error || 'Erro desconhecido',
-            'Erro ao excluir o membro',
+            'Erro ao excluir o usuário',
           );
         },
       });

@@ -14,6 +14,8 @@ import { AddContributionComponent } from './components/add/add-contributions.com
 import { WeeklyReportDialogComponent } from './components/weekly-report-dialog/weekly-report-dialog.component';
 import { ContributionsService } from './services/contributions.service';
 import { ConfirmModalComponent } from '../../shared/components/confirm-modal/confirm-modal.component';
+import { User } from '../auth/models/user.model';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-contributions',
@@ -38,6 +40,7 @@ export class ContributionsComponent implements OnInit {
   private readonly toastService = inject(ToastService);
 
   form!: FormGroup;
+  user: User | null = this.getUserFromLocalStorage();
 
   members$: Observable<Member[]> = this.contributionsService.getMembers();
   contributionTypes$: Observable<ContributionType[]> =
@@ -61,6 +64,11 @@ export class ContributionsComponent implements OnInit {
 
   ngOnInit(): void {
     this.getContributionList();
+  }
+
+  getUserFromLocalStorage(): User | null {
+    const user = localStorage.getItem(environment.APP_USER_KEY);
+    return user ? JSON.parse(user) : null;
   }
 
   openNewContribution(): void {
@@ -196,8 +204,11 @@ export class ContributionsComponent implements OnInit {
               a.click();
               window.URL.revokeObjectURL(url);
             },
-            error: () => {
-              this.toastService.error('Erro ao gerar relatório semanal.');
+            error: (error) => {
+              this.toastService.error(
+                error.error.error || 'Erro desconhecido',
+                'Erro ao gerar relatório semanal',
+              );
             },
           });
       });
@@ -221,8 +232,11 @@ export class ContributionsComponent implements OnInit {
             }
           });
         },
-        error: () => {
-          this.toastService.error('Erro ao buscar dados da contribuição.');
+        error: (error) => {
+          this.toastService.error(
+            error.error.error || 'Erro desconhecido',
+            'Erro ao buscar dados da contribuição',
+          );
         },
       });
   }
@@ -254,8 +268,11 @@ export class ContributionsComponent implements OnInit {
           this.toastService.success('Contribuição excluída com sucesso.');
           this.getContributionList();
         },
-        error: () => {
-          this.toastService.error('Erro ao excluir a contribuição. Tente novamente mais tarde.');
+        error: (error) => {
+          this.toastService.error(
+            error.error.error || 'Erro desconhecido',
+            'Erro ao excluir a contribuição',
+          );
         },
       });
   }

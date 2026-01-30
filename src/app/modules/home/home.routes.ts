@@ -21,6 +21,10 @@ export const HOME_ROUTES: Routes = [
         path: 'members',
         loadChildren: () => import('./../members/members.routes').then((m) => m.MEMBERS_ROUTES),
       },
+      {
+        path: 'users',
+        loadChildren: () => import('./../users/users.routes').then((m) => m.USERS_ROUTES),
+      },
     ],
   },
 ];

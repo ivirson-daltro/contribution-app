@@ -1,0 +1,66 @@
+<div class="cadastrar-container">
+  <div class="cadastrar-card">
+    <h2 mat-dialog-title class="card-title">{{ data ? 'Atualizar' : 'Novo' }} Usuário</h2>
+    <form [formGroup]="form" (ngSubmit)="submit()" class="contribution-form">
+      <mat-dialog-content>
+        <div class="mb-3">
+          <label class="form-label">Nome</label>
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Digite o nome completo"
+            formControlName="name"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Email</label>
+          <input
+            type="email"
+            class="form-control"
+            placeholder="seu@email.com"
+            formControlName="email"
+          />
+        </div>
+
+        <div class="row mb-3">
+          <div class="col-12 col-md-6">
+            <label class="form-label">Senha</label>
+            <input
+              type="password"
+              class="form-control"
+              placeholder="Mínimo 6 caracteres"
+              formControlName="password"
+            />
+          </div>
+          <div class="col-12 col-md-6">
+            <label class="form-label">Confirmar Senha</label>
+            <input
+              type="password"
+              class="form-control"
+              placeholder="Repita a senha"
+              formControlName="confirmPassword"
+            />
+          </div>
+        </div>
+
+        <div class="mb-4">
+          <label class="form-label">Perfil</label>
+          <select class="form-control" formControlName="role">
+            <option value="" disabled selected>- Selecione</option>
+            <option value="ADMIN">Administrador</option>
+            <option value="USER">Usuário</option>
+          </select>
+        </div>
+      </mat-dialog-content>
+
+      <mat-dialog-actions class="form-footer" align="end">
+        <button type="button" class="btn cancel-button" (click)="close()">Cancelar</button>
+        <button type="submit" class="btn btn-primary submit-button" [disabled]="form.invalid">
+          <mat-icon fontIcon="save" class="submit-icon"></mat-icon>
+          {{ data ? 'Atualizar' : 'Cadastrar' }} Membro
+        </button>
+      </mat-dialog-actions>
+    </form>
+  </div>
+</div>

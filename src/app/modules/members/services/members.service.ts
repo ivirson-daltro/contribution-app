@@ -18,7 +18,7 @@ export class MembersService {
     page = 1,
     limit = 10,
     sortBy?: 'name',
-    sortDirection: 'asc' | 'desc' = 'desc',
+    sortDirection: 'asc' | 'desc' = 'asc',
   ): Observable<PaginatedResponse<Member>> {
     let params = new HttpParams().set('page', page.toString()).set('limit', limit.toString());
 

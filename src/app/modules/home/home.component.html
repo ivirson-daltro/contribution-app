@@ -23,34 +23,44 @@
         <mat-icon>space_dashboard</mat-icon>
         <span>Dashboard</span>
       </button>
-      <button
-        mat-button
-        class="layout-sidenav__item"
-        routerLink="contributions"
-        routerLinkActive="layout-sidenav__item--active"
-        (click)="closeSidenavOnMobile()"
-      >
-        <mat-icon>list</mat-icon>
-        <span>Contribuições</span>
-      </button>
-      <button
-        mat-button
-        class="layout-sidenav__item"
-        routerLink="members"
-        routerLinkActive="layout-sidenav__item--active"
-        (click)="closeSidenavOnMobile()"
-      >
-        <mat-icon>people</mat-icon>
-        <span>Membros</span>
-      </button>
-      <!-- <button mat-button class="layout-sidenav__item">
-        <mat-icon>list</mat-icon>
-        <span>Listar Contribuições</span>
-      </button>
-      <button mat-button class="layout-sidenav__item">
-        <mat-icon>bar_chart</mat-icon>
-        <span>Relatórios</span>
-      </button> -->
+      @if (user?.role === 'ADMIN' || user?.role === 'USER') {
+        <button
+          mat-button
+          class="layout-sidenav__item"
+          routerLink="contributions"
+          routerLinkActive="layout-sidenav__item--active"
+          (click)="closeSidenavOnMobile()"
+        >
+          <mat-icon>list</mat-icon>
+          <span>Contribuições</span>
+        </button>
+      }
+
+      @if (user?.role === 'ADMIN') {
+        <button
+          mat-button
+          class="layout-sidenav__item"
+          routerLink="members"
+          routerLinkActive="layout-sidenav__item--active"
+          (click)="closeSidenavOnMobile()"
+        >
+          <mat-icon>people</mat-icon>
+          <span>Membros</span>
+        </button>
+      }
+
+      @if (user?.role === 'ADMIN') {
+        <button
+          mat-button
+          class="layout-sidenav__item"
+          routerLink="users"
+          routerLinkActive="layout-sidenav__item--active"
+          (click)="closeSidenavOnMobile()"
+        >
+          <mat-icon>person</mat-icon>
+          <span>Usuários</span>
+        </button>
+      }
     </nav>
 
     <div class="layout-sidenav__footer">
@@ -60,7 +70,7 @@
           <div class="user-card__name">{{ user?.name }}</div>
           <div class="user-card__email">{{ user?.email }}</div>
           <span class="user-card__role">{{
-            user?.role === 'TREASURER' ? 'Tesoureiro' : 'Conselho Fiscal'
+            user?.role === 'ADMIN' ? 'Administrador' : 'Usuário'
           }}</span>
         </div>
       </div>

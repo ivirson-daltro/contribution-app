@@ -1,12 +1,12 @@
 <div class="contributions container-fluid py-4">
   <div class="row align-items-center mb-4">
     <div class="col-12 col-lg">
-      <h1 class="h4 mb-1 fw-semibold">Membros</h1>
-      <p class="text-muted small mb-0">Visualize e gerencie os membros cadastrados</p>
+      <h1 class="h4 mb-1 fw-semibold">Usuários</h1>
+      <p class="text-muted small mb-0">Visualize e gerencie os usuários cadastrados</p>
     </div>
     <div class="col-12 col-lg-auto">
-      <button type="button" class="btn btn-primary submit-button" (click)="openNewMember()">
-        <mat-icon fontIcon="add" class="submit-icon"></mat-icon> Novo Membro
+      <button type="button" class="btn btn-primary submit-button" (click)="openNewUser()">
+        <mat-icon fontIcon="add" class="submit-icon"></mat-icon> Novo Usuário
       </button>
     </div>
   </div>
@@ -14,7 +14,7 @@
   <!-- Grid -->
   <div class="col-12 mb-4">
     <mat-card class="panel h-100">
-      <h2 class="panel-title mb-3">Membros</h2>
+      <h2 class="panel-title mb-3">Usuários</h2>
       <div class="table-responsive">
         <table class="table table-striped table-hover align-middle mb-0">
           <thead class="table-light">
@@ -28,32 +28,52 @@
                   ></mat-icon>
                 }
               </th>
+              <th (click)="changeSort('email')" class="sortable">
+                Email
+                @if (sortBy === 'email') {
+                  <mat-icon
+                    class="sort-icon"
+                    fontIcon="{{ sortDirection === 'asc' ? 'arrow_upward' : 'arrow_downward' }}"
+                  ></mat-icon>
+                }
+              </th>
+              <th (click)="changeSort('role')" class="sortable">
+                Perfil
+                @if (sortBy === 'role') {
+                  <mat-icon
+                    class="sort-icon"
+                    fontIcon="{{ sortDirection === 'asc' ? 'arrow_upward' : 'arrow_downward' }}"
+                  ></mat-icon>
+                }
+              </th>
               <th class="text-center">Ações</th>
             </tr>
           </thead>
           <tbody>
-            @if (members.length === 0) {
+            @if (users.length === 0) {
               <tr>
                 <td colspan="6" class="text-center text-muted small py-4">
-                  Nenhum membro encontrado.
+                  Nenhum usuário encontrado.
                 </td>
               </tr>
             } @else {
-              @for (item of members; track item.id) {
+              @for (item of users; track item.id) {
                 <tr>
                   <td>{{ item.name }}</td>
+                  <td>{{ item.email }}</td>
+                  <td>{{ item.role === 'ADMIN' ? 'Administrador' : 'Usuário' }}</td>
                   <td class="text-center">
                     <button
                       class="rounded-button me-1"
-                      aria-label="Editar Membro"
-                      (click)="editMember(item.id)"
+                      aria-label="Editar Usuário"
+                      (click)="editUser(item.id)"
                     >
                       <mat-icon fontIcon="edit"></mat-icon>
                     </button>
                     <button
                       class="rounded-button"
-                      aria-label="Excluir Membro"
-                      (click)="deleteMember(item.id)"
+                      aria-label="Excluir Usuário"
+                      (click)="deleteUser(item.id)"
                     >
                       <mat-icon fontIcon="delete"></mat-icon>
                     </button>
@@ -67,7 +87,7 @@
 
       <div class="row">
         <div class="col-12 col-lg-6">
-          <p class="me-5 mb-3 mt-4"><strong>Total de membros:</strong> {{ totalMembers }}</p>
+          <p class="me-5 mb-3 mt-4"><strong>Total de usuários:</strong> {{ totalUsers }}</p>
         </div>
         <div class="col-12 col-lg-6">
           @if (totalPages > 1) {

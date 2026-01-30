@@ -27,6 +27,11 @@ import { AuthService } from '../auth/services/auth.service';
   styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent {
+  private readonly dialog = inject(MatDialog);
+  private readonly authService = inject(AuthService);
+  private readonly router = inject(Router);
+
+  user: User | null = this.getUserFromLocalStorage();
   isSidenavOpen = window.innerWidth > 991;
 
   closeSidenavOnMobile(): void {
@@ -34,11 +39,6 @@ export class HomeComponent {
       this.isSidenavOpen = false;
     }
   }
-  private readonly dialog = inject(MatDialog);
-  private readonly authService = inject(AuthService);
-  private readonly router = inject(Router);
-
-  user: User | null = this.getUserFromLocalStorage();
 
   getUserFromLocalStorage(): User | null {
     const user = localStorage.getItem(environment.APP_USER_KEY);

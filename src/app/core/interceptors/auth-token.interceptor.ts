@@ -11,7 +11,7 @@ export const authTokenInterceptor: HttpInterceptorFn = (req, next) => {
   const toastService = inject(ToastService);
   const token = authService.getToken();
 
-  const isAuthRequest = req.url.includes('/auth/login') || req.url.includes('/auth/users');
+  const isAuthRequest = req.url.includes('/auth/login');
 
   // Não adiciona token na requisição de login
   if (isAuthRequest) {
