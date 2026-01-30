@@ -22,7 +22,7 @@ jobs:
 
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: dist/contribution-app
+          path: dist/app/browser
 
   deploy:
     needs: build
