@@ -20,14 +20,13 @@
 }
 
 .layout-sidenav__icon {
-  width: 2.25rem;
-  height: 2.25rem;
-  border-radius: 0.9rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #facc15;
-  color: #1e293b;
+  img {
+    width: 2.25rem;
+    height: 2.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 }
 
 .layout-sidenav__title {
