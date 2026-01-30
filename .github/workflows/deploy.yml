@@ -3,7 +3,12 @@ name: Deploy Angular to GitHub Pages
 on:
   push:
     branches:
-      - main # Altere se seu branch principal tiver outro nome
+      - main
+
+permissions:
+  pages: write
+  id-token: write
+  contents: read
 
 jobs:
   build:
