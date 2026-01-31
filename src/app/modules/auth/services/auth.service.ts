@@ -3,7 +3,7 @@ import { inject, Injectable } from '@angular/core';
 import { map, Observable, tap } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { UserCredentials } from '../models/user-credentials.model';
-import { User } from '../models/user.model';
+import { User } from '../../users/models/user.model';
 
 @Injectable({
   providedIn: 'root',
@@ -27,7 +27,7 @@ export class AuthService {
   }
 
   register(user: User): Observable<void> {
-    return this.httpClient.post<void>(`${environment.apiUrl}/auth/users`, user);
+    return this.httpClient.post<void>(`${environment.apiUrl}/auth/register`, user);
   }
 
   getToken(): string | null {

@@ -8,9 +8,9 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { first } from 'rxjs';
 import { ConfirmModalComponent } from '../../shared/components/confirm-modal/confirm-modal.component';
 import { ToastService } from '../../shared/services/toast.service';
-import { User } from '../auth/models/user.model';
 import { AddUsersComponent } from './components/add/add-users.component';
 import { UsersService } from './services/users.service';
+import { User } from './models/user.model';
 
 @Component({
   selector: 'app-users',

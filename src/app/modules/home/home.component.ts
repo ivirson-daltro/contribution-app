@@ -7,8 +7,8 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { environment } from '../../../environments/environment';
-import { User } from '../auth/models/user.model';
 import { AuthService } from '../auth/services/auth.service';
+import { User } from '../users/models/user.model';
 
 @Component({
   selector: 'app-home',

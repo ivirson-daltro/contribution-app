@@ -4,8 +4,8 @@ import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/materia
 import { MatIconModule } from '@angular/material/icon';
 import { first } from 'rxjs';
 import { ToastService } from '../../../../shared/services/toast.service';
-import { User } from '../../../auth/models/user.model';
 import { UsersService } from '../../services/users.service';
+import { User } from '../../models/user.model';
 
 @Component({
   selector: 'app-add-users',

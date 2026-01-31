@@ -14,8 +14,8 @@ import { AddContributionComponent } from './components/add/add-contributions.com
 import { WeeklyReportDialogComponent } from './components/weekly-report-dialog/weekly-report-dialog.component';
 import { ContributionsService } from './services/contributions.service';
 import { ConfirmModalComponent } from '../../shared/components/confirm-modal/confirm-modal.component';
-import { User } from '../auth/models/user.model';
 import { environment } from '../../../environments/environment';
+import { User } from '../users/models/user.model';
 
 @Component({
   selector: 'app-contributions',
