@@ -1,4 +1,4 @@
-import { AsyncPipe, CurrencyPipe, DatePipe } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { FormGroup, FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -6,15 +6,16 @@ import { MatCardModule } from '@angular/material/card';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { NgxMaskPipe } from 'ngx-mask';
 import { first } from 'rxjs';
+import { environment } from '../../../environments/environment';
+import { ConfirmModalComponent } from '../../shared/components/confirm-modal/confirm-modal.component';
 import { ToastService } from '../../shared/services/toast.service';
 import { Member } from '../home/models/domain.model';
+import { UserRoles } from '../users/constants/user-roles.enum';
+import { User } from '../users/models/user.model';
 import { AddMembersComponent } from './components/add/add-members.component';
 import { MembersService } from './services/members.service';
-import { ConfirmModalComponent } from '../../shared/components/confirm-modal/confirm-modal.component';
-import { User } from '../users/models/user.model';
-import { UserRoles } from '../users/constants/user-roles.enum';
-import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-members',
@@ -25,6 +26,8 @@ import { environment } from '../../../environments/environment';
     MatDialogModule,
     MatSnackBarModule,
     FormsModule,
+    NgxMaskPipe,
+    DatePipe,
   ],
   templateUrl: './members.component.html',
   styleUrls: ['./members.component.scss'],
@@ -37,6 +40,8 @@ export class MembersComponent implements OnInit {
   form!: FormGroup;
   user: User | null = this.getUserFromLocalStorage();
   userRoles = UserRoles;
+
+  name: string = '';
 
   members: Member[] = [];
   totalMembers = 0;
@@ -68,24 +73,47 @@ export class MembersComponent implements OnInit {
     });
   }
 
+  searchByName(): void {
+    this.membersService
+      .getByName(this.name)
+      .pipe(first())
+      .subscribe({
+        next: (res) => this.processMembersResponse(res, 1, this.pageSize),
+        error: (error) => {
+          this.toastService.error(
+            error.error.error || 'Erro desconhecido',
+            'Erro ao buscar lista de membros',
+          );
+        },
+      });
+  }
+
   getMemberList(pageIndex: number = this.pageIndex, pageSize: number = this.pageSize): void {
     const page = pageIndex + 1; // API assumida como 1-based
-
     this.membersService
       .getPaginatedMembers(page, pageSize, this.sortBy, this.sortDirection)
       .pipe(first())
-      .subscribe((res) => {
-        if (!res) {
-          this.members = [];
-          this.totalMembers = 0;
-          return;
-        }
-
-        this.members = res.data ?? [];
-        this.totalMembers = res.total ?? 0;
-        this.pageIndex = (res.page ?? page) - 1;
-        this.pageSize = res.limit ?? pageSize;
+      .subscribe({
+        next: (res) => this.processMembersResponse(res, page, pageSize),
+        error: (error) => {
+          this.toastService.error(
+            error.error.error || 'Erro desconhecido',
+            'Erro ao buscar lista de membros',
+          );
+        },
       });
+  }
+
+  private processMembersResponse(res: any, fallbackPage: number, fallbackPageSize: number): void {
+    if (!res) {
+      this.members = [];
+      this.totalMembers = 0;
+      return;
+    }
+    this.members = res.data ?? [];
+    this.totalMembers = res.total ?? 0;
+    this.pageIndex = (res.page ?? fallbackPage) - 1;
+    this.pageSize = res.limit ?? fallbackPageSize;
   }
 
   get totalPages(): number {
@@ -178,5 +206,10 @@ export class MembersComponent implements OnInit {
           );
         },
       });
+  }
+
+  limpar(): void {
+    this.name = '';
+    this.getMemberList(0, this.pageSize);
   }
 }

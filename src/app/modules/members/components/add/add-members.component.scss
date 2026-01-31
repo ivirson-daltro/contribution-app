@@ -1,16 +1,11 @@
 .cadastrar-container {
   .card-title {
-    margin: 0 0 1.5rem;
     font-size: 1.25rem;
     font-weight: 700;
     color: #0b2454;
   }
 
   .contribution-form {
-    .form-body {
-      padding-top: 0.25rem;
-    }
-
     .form-label {
       display: block;
       font-size: 0.85rem;
@@ -63,6 +58,19 @@
       background-color: #0b2454;
       font-weight: 600;
     }
+  }
+}
+
+fieldset {
+  border: 1px solid #d1d5db;
+  border-radius: 0.625rem;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+
+  legend {
+    margin-bottom: 1rem;
+    font-weight: 600;
+    color: #374151;
   }
 }
 

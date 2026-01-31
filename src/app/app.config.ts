@@ -1,6 +1,7 @@
 import { ApplicationConfig, LOCALE_ID, provideBrowserGlobalErrorListeners } from '@angular/core';
 import { provideHttpClient, withInterceptors, withInterceptorsFromDi } from '@angular/common/http';
 import { provideRouter, withHashLocation } from '@angular/router';
+import { provideNgxMask } from 'ngx-mask';
 
 import { routes } from './app.routes';
 import { loadingInterceptor } from './core/interceptors/loading.interceptor';
@@ -15,5 +16,6 @@ export const appConfig: ApplicationConfig = {
       withInterceptorsFromDi(),
     ),
     { provide: LOCALE_ID, useValue: 'pt-BR' },
+    provideNgxMask(),
   ],
 };

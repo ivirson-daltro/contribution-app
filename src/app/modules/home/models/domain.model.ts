@@ -16,7 +16,7 @@ export interface Contribution {
   paymentMethod: PaymentMethod;
   amount: number;
   date: string;
-  observation: string;
+  observation?: string;
   createdAt: string;
 }
 
@@ -25,8 +25,18 @@ export interface Member {
   name: string;
   memberTypeId: string;
   memberType: MemberType;
-
-  createdAt: string;
+  phone?: string;
+  email?: string;
+  genre?: string;
+  birthDate?: string;
+  entryDate?: string;
+  baptismDate?: string;
+  zipCode?: string;
+  street?: string;
+  number?: string;
+  complement?: string;
+  city?: string;
+  state?: string;
 }
 
 export interface MemberType {

@@ -8,10 +8,12 @@ import { first, Observable } from 'rxjs';
 import { Member, MemberType } from '../../../home/models/domain.model';
 import { MembersService } from '../../services/members.service';
 import { ToastService } from '../../../../shared/services/toast.service';
+import { NgxMaskDirective } from 'ngx-mask';
+import { Address } from '../../models/address.model';
 
 @Component({
   selector: 'app-add-members',
-  imports: [ReactiveFormsModule, MatDialogModule, MatIconModule, AsyncPipe],
+  imports: [ReactiveFormsModule, MatDialogModule, MatIconModule, AsyncPipe, NgxMaskDirective],
   templateUrl: './add-members.component.html',
   styleUrls: ['./add-members.component.scss'],
 })
@@ -32,10 +34,30 @@ export class AddMembersComponent implements OnInit {
   ngOnInit(): void {
     this.buildForm();
     if (this.data) {
-      this.form.patchValue({
+      // Garante que todos os campos do backend sejam populados corretamente
+      const patch: Member = {
+        id: this.data.id ?? '',
         name: this.data.name ?? '',
-        memberTypeId: this.data.memberTypeId ?? '',
-      });
+        memberTypeId: this.data.memberTypeId ?? null,
+        memberType: this.data.memberType ?? null,
+        phone: this.data.phone ?? undefined,
+        email: this.data.email ?? undefined,
+        genre: this.data.genre ?? undefined,
+        birthDate: this.data.birthDate ?? undefined,
+        entryDate: this.data.entryDate ?? undefined,
+        baptismDate: this.data.baptismDate ?? undefined,
+        zipCode: this.data.zipCode ?? undefined,
+        street: this.data.street ?? undefined,
+        number: this.data.number ?? undefined,
+        complement: this.data.complement ?? undefined,
+        city: this.data.city ?? undefined,
+        state: this.data.state ?? undefined,
+      };
+      // Se memberType vier como objeto, pega o id
+      if (this.data.memberType && this.data.memberType.id) {
+        patch.memberTypeId = this.data.memberType.id;
+      }
+      this.form.patchValue(patch);
     }
   }
 
@@ -43,6 +65,18 @@ export class AddMembersComponent implements OnInit {
     this.form = this.fb.group({
       name: ['', Validators.required],
       memberTypeId: ['', Validators.required],
+      phone: [''],
+      email: [''],
+      genre: [''],
+      birthDate: [''],
+      entryDate: [''],
+      baptismDate: [''],
+      zipCode: [''],
+      street: [''],
+      number: [''],
+      complement: [''],
+      city: [''],
+      state: [''],
     });
   }
 
@@ -84,6 +118,30 @@ export class AddMembersComponent implements OnInit {
           this.toastService.error(error?.error?.error ?? 'Erro ao atualizar membro.');
         },
       });
+  }
+
+  onZipCodeChange(e: Event): void {
+    const input = e.target as HTMLInputElement;
+    const zipCode = input.value;
+    if (zipCode && zipCode.length === 9) {
+      this.getAddressByZipCode(zipCode);
+    }
+  }
+
+  getAddressByZipCode(zipCode: string): void {
+    this.membersService.getAddressByZipCode(zipCode).subscribe({
+      next: (address: Address) => {
+        this.form.patchValue({
+          street: address.logradouro,
+          complement: address.complemento,
+          city: address.localidade,
+          state: address.uf,
+        });
+      },
+      error: () => {
+        this.toastService.warning('Endereço não encontrado para o CEP informado.');
+      },
+    });
   }
 
   close(): void {

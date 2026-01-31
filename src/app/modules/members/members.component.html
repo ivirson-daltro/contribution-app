@@ -11,6 +11,39 @@
     </div>
   </div>
 
+  <!-- Filtros -->
+  <div class="col-12 mb-4">
+    <mat-card class="panel h-100">
+      <h2 class="panel-title mb-3 d-flex align-items-center">
+        <mat-icon fontIcon="filter_alt" class="me-2"></mat-icon> Filtros
+      </h2>
+      <div class="row mb-2">
+        <div class="col-12 col-lg-5 mb-3">
+          <label for="name" class="form-label">Nome</label>
+          <input
+            class="form-control"
+            [(ngModel)]="name"
+            placeholder="Digite um nome ou parte de um nome para filtrar"
+          />
+        </div>
+
+        <div class="col-12 col-lg-7 text-end">
+          <button type="button" class="btn cancel-button" (click)="limpar()">
+            <mat-icon fontIcon="clear" class="submit-icon"></mat-icon> Limpar
+          </button>
+          <button
+            type="submit"
+            class="btn btn-primary submit-button"
+            (click)="searchByName()"
+            [disabled]="!name"
+          >
+            <mat-icon fontIcon="search" class="submit-icon"></mat-icon> Pesquisar
+          </button>
+        </div>
+      </div>
+    </mat-card>
+  </div>
+
   <!-- Grid -->
   <div class="col-12 mb-4">
     <mat-card class="panel h-100">
@@ -28,6 +61,10 @@
                   ></mat-icon>
                 }
               </th>
+              <th>Tipo de Membro</th>
+              <th>Telefone</th>
+              <th>E-mail</th>
+              <th>Data de Nascimento</th>
               @if (
                 user?.role === userRoles.ADMIN ||
                 user?.role === userRoles.TREASURER ||
@@ -48,6 +85,10 @@
               @for (item of members; track item.id) {
                 <tr>
                   <td>{{ item.name }}</td>
+                  <td>{{ item.memberType.description }}</td>
+                  <td>{{ item.phone ?? '' | mask: '(00) 0 0000-0000' }}</td>
+                  <td>{{ item.email }}</td>
+                  <td>{{ item.birthDate | date: 'dd/MM/yyyy' }}</td>
                   @if (
                     user?.role === userRoles.ADMIN ||
                     user?.role === userRoles.TREASURER ||

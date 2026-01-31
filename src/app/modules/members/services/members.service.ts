@@ -39,11 +39,21 @@ export class MembersService {
     return this.httpClient.get<Member>(`${environment.apiUrl}/members/${memberId}`);
   }
 
+  getByName(name: string): Observable<PaginatedResponse<Member>> {
+    return this.httpClient.get<PaginatedResponse<Member>>(
+      `${environment.apiUrl}/members/search?q=${name}`,
+    );
+  }
+
   updateMember(memberId: string, memberData: Member): Observable<void> {
     return this.httpClient.put<void>(`${environment.apiUrl}/members/${memberId}`, memberData);
   }
 
   deleteMember(memberId: string): Observable<void> {
     return this.httpClient.delete<void>(`${environment.apiUrl}/members/${memberId}`);
+  }
+
+  getAddressByZipCode(zipCode: string): Observable<any> {
+    return this.httpClient.get<any>(`https://viacep.com.br/ws/${zipCode}/json/`);
   }
 }
