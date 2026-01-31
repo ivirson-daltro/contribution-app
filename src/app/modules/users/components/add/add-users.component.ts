@@ -6,6 +6,7 @@ import { first } from 'rxjs';
 import { ToastService } from '../../../../shared/services/toast.service';
 import { UsersService } from '../../services/users.service';
 import { User } from '../../models/user.model';
+import { UserRoles } from '../../constants/user-roles.enum';
 
 @Component({
   selector: 'app-add-users',
@@ -18,6 +19,7 @@ export class AddUsersComponent implements OnInit {
   private readonly toastService = inject(ToastService);
 
   form!: FormGroup;
+  userRoles = UserRoles;
 
   constructor(
     private fb: FormBuilder,

@@ -12,6 +12,9 @@ import { Member } from '../home/models/domain.model';
 import { AddMembersComponent } from './components/add/add-members.component';
 import { MembersService } from './services/members.service';
 import { ConfirmModalComponent } from '../../shared/components/confirm-modal/confirm-modal.component';
+import { User } from '../users/models/user.model';
+import { UserRoles } from '../users/constants/user-roles.enum';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-members',
@@ -32,6 +35,8 @@ export class MembersComponent implements OnInit {
   private readonly toastService = inject(ToastService);
 
   form!: FormGroup;
+  user: User | null = this.getUserFromLocalStorage();
+  userRoles = UserRoles;
 
   members: Member[] = [];
   totalMembers = 0;
@@ -42,6 +47,11 @@ export class MembersComponent implements OnInit {
 
   ngOnInit(): void {
     this.getMemberList();
+  }
+
+  getUserFromLocalStorage(): User | null {
+    const user = localStorage.getItem(environment.APP_USER_KEY);
+    return user ? JSON.parse(user) : null;
   }
 
   openNewMember(): void {

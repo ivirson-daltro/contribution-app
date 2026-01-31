@@ -28,7 +28,13 @@
                   ></mat-icon>
                 }
               </th>
-              <th class="text-center">Ações</th>
+              @if (
+                user?.role === userRoles.ADMIN ||
+                user?.role === userRoles.TREASURER ||
+                user?.role === userRoles.SECRETARY
+              ) {
+                <th class="text-center">Ações</th>
+              }
             </tr>
           </thead>
           <tbody>
@@ -42,22 +48,28 @@
               @for (item of members; track item.id) {
                 <tr>
                   <td>{{ item.name }}</td>
-                  <td class="text-center">
-                    <button
-                      class="rounded-button me-1"
-                      aria-label="Editar Membro"
-                      (click)="editMember(item.id)"
-                    >
-                      <mat-icon fontIcon="edit"></mat-icon>
-                    </button>
-                    <button
-                      class="rounded-button"
-                      aria-label="Excluir Membro"
-                      (click)="deleteMember(item.id)"
-                    >
-                      <mat-icon fontIcon="delete"></mat-icon>
-                    </button>
-                  </td>
+                  @if (
+                    user?.role === userRoles.ADMIN ||
+                    user?.role === userRoles.TREASURER ||
+                    user?.role === userRoles.SECRETARY
+                  ) {
+                    <td class="text-center">
+                      <button
+                        class="rounded-button me-1"
+                        aria-label="Editar Membro"
+                        (click)="editMember(item.id)"
+                      >
+                        <mat-icon fontIcon="edit"></mat-icon>
+                      </button>
+                      <button
+                        class="rounded-button"
+                        aria-label="Excluir Membro"
+                        (click)="deleteMember(item.id)"
+                      >
+                        <mat-icon fontIcon="delete"></mat-icon>
+                      </button>
+                    </td>
+                  }
                 </tr>
               }
             }

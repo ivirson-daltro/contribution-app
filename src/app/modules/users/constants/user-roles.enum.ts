@@ -1,0 +1,7 @@
+export enum UserRoles {
+  ADMIN = 'ADMIN',
+  FISCAL = 'FISCAL',
+  SECRETARY = 'SECRETARY',
+  TREASURER = 'TREASURER',
+  PRESIDENT = 'PRESIDENT',
+}

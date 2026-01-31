@@ -16,6 +16,7 @@ import { ContributionsService } from './services/contributions.service';
 import { ConfirmModalComponent } from '../../shared/components/confirm-modal/confirm-modal.component';
 import { environment } from '../../../environments/environment';
 import { User } from '../users/models/user.model';
+import { UserRoles } from '../users/constants/user-roles.enum';
 
 @Component({
   selector: 'app-contributions',
@@ -41,6 +42,7 @@ export class ContributionsComponent implements OnInit {
 
   form!: FormGroup;
   user: User | null = this.getUserFromLocalStorage();
+  userRoles = UserRoles;
 
   members$: Observable<Member[]> = this.contributionsService.getMembers();
   contributionTypes$: Observable<ContributionType[]> =

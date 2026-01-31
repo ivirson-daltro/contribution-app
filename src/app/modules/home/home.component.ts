@@ -9,6 +9,7 @@ import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/rou
 import { environment } from '../../../environments/environment';
 import { AuthService } from '../auth/services/auth.service';
 import { User } from '../users/models/user.model';
+import { UserRoles } from '../users/constants/user-roles.enum';
 
 @Component({
   selector: 'app-home',
@@ -33,6 +34,7 @@ export class HomeComponent {
 
   user: User | null = this.getUserFromLocalStorage();
   isSidenavOpen = window.innerWidth > 991;
+  userRoles = UserRoles;
 
   closeSidenavOnMobile(): void {
     if (window.innerWidth <= 991) {

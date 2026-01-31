@@ -1,6 +1,7 @@
 import { CanActivateFn, Router } from '@angular/router';
 import { inject } from '@angular/core';
 import { AuthService } from '../services/auth.service';
+import { UserRoles } from '../../users/constants/user-roles.enum';
 
 export const authGuard: CanActivateFn = (route, state) => {
   const authService = inject(AuthService);
@@ -24,16 +25,34 @@ export const authGuard: CanActivateFn = (route, state) => {
 
   // Define permissões por rota (exemplo)
   const routePermissions: { [key: string]: string[] } = {
-    '/members': ['ADMIN'],
-    '/users': ['ADMIN'],
-    '/contributions': ['ADMIN', 'USER'],
-    '/': ['ADMIN', 'USER'],
+    '/': [
+      UserRoles.ADMIN,
+      UserRoles.TREASURER,
+      UserRoles.SECRETARY,
+      UserRoles.PRESIDENT,
+      UserRoles.FISCAL,
+    ],
+    '/members': [
+      UserRoles.ADMIN,
+      UserRoles.TREASURER,
+      UserRoles.SECRETARY,
+      UserRoles.PRESIDENT,
+      UserRoles.FISCAL,
+    ],
+    '/users': [UserRoles.ADMIN],
+    '/contributions': [UserRoles.ADMIN, UserRoles.FISCAL, UserRoles.TREASURER],
   };
 
   // Descobre o path base da rota
   const url = state.url.split('?')[0];
   const basePath = url.split('/')[1] ? `/${url.split('/')[1]}` : '/';
-  const allowedRoles = routePermissions[basePath] || ['ADMIN', 'USER'];
+  const allowedRoles = routePermissions[basePath] || [
+    UserRoles.ADMIN,
+    UserRoles.TREASURER,
+    UserRoles.SECRETARY,
+    UserRoles.PRESIDENT,
+    UserRoles.FISCAL,
+  ];
 
   if (!allowedRoles.includes(user.role)) {
     // Redireciona se não tiver permissão

@@ -48,8 +48,11 @@
           <label class="form-label">Perfil</label>
           <select class="form-control" formControlName="role">
             <option value="" disabled selected>- Selecione</option>
-            <option value="ADMIN">Administrador</option>
-            <option value="USER">Usuário</option>
+            <option [value]="userRoles.ADMIN">Administrador</option>
+            <option [value]="userRoles.FISCAL">Conselho Fiscal</option>
+            <option [value]="userRoles.SECRETARY">Secretário</option>
+            <option [value]="userRoles.TREASURER">Tesoureiro</option>
+            <option [value]="userRoles.PRESIDENT">Presidente</option>
           </select>
         </div>
       </mat-dialog-content>

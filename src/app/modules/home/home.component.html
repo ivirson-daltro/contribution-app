@@ -23,7 +23,11 @@
         <mat-icon>space_dashboard</mat-icon>
         <span>Dashboard</span>
       </button>
-      @if (user?.role === 'ADMIN' || user?.role === 'USER') {
+      @if (
+        user?.role === userRoles.ADMIN ||
+        user?.role === userRoles.TREASURER ||
+        user?.role === userRoles.FISCAL
+      ) {
         <button
           mat-button
           class="layout-sidenav__item"
@@ -36,7 +40,12 @@
         </button>
       }
 
-      @if (user?.role === 'ADMIN') {
+      @if (
+        user?.role === userRoles.ADMIN ||
+        user?.role === userRoles.TREASURER ||
+        user?.role === userRoles.SECRETARY ||
+        user?.role === userRoles.PRESIDENT
+      ) {
         <button
           mat-button
           class="layout-sidenav__item"
@@ -49,7 +58,7 @@
         </button>
       }
 
-      @if (user?.role === 'ADMIN') {
+      @if (user?.role === userRoles.ADMIN) {
         <button
           mat-button
           class="layout-sidenav__item"
@@ -69,9 +78,28 @@
         <div class="user-card__info">
           <div class="user-card__name">{{ user?.name }}</div>
           <div class="user-card__email">{{ user?.email }}</div>
-          <span class="user-card__role">{{
-            user?.role === 'ADMIN' ? 'Administrador' : 'Usuário'
-          }}</span>
+          <span class="user-card__role">
+            @switch (user?.role) {
+              @case (userRoles.ADMIN) {
+                Administrador
+              }
+              @case (userRoles.TREASURER) {
+                Tesoureiro(a)
+              }
+              @case (userRoles.SECRETARY) {
+                Secretário(a)
+              }
+              @case (userRoles.FISCAL) {
+                Conselho Fiscal
+              }
+              @case (userRoles.PRESIDENT) {
+                Presidente
+              }
+              @default {
+                Usuário
+              }
+            }
+          </span>
         </div>
       </div>
 

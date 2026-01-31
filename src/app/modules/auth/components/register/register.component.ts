@@ -5,6 +5,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { Router } from '@angular/router';
 import { first } from 'rxjs';
 import { ToastService } from '../../../../shared/services/toast.service';
+import { UserRoles } from '../../../users/constants/user-roles.enum';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
@@ -21,6 +22,7 @@ export class RegisterComponent implements OnInit {
   private readonly router = inject(Router);
 
   form!: FormGroup;
+  userRoles = UserRoles;
 
   ngOnInit(): void {
     this.buildForm();

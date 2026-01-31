@@ -64,7 +64,7 @@ export class ContributionsService {
     }
 
     return this.httpClient.get<PaginatedResponse<Contribution>>(
-      `${environment.apiUrl}/contributions`,
+      `${environment.apiUrl}/contributions/paginated`,
       { params },
     );
   }
