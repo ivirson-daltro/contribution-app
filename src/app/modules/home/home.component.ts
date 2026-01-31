@@ -41,8 +41,21 @@ export class HomeComponent {
   }
 
   getUserFromLocalStorage(): User | null {
-    const user = localStorage.getItem(environment.APP_USER_KEY);
-    return user ? JSON.parse(user) : null;
+    try {
+      const user = localStorage.getItem(environment.APP_USER_KEY);
+      if (!user) return null;
+      const parsed = JSON.parse(user);
+      // Garante que tem os campos esperados
+      if (typeof parsed === 'object' && parsed && parsed.role && parsed.name && parsed.email) {
+        return parsed;
+      }
+      // Se inválido, limpa e força logout
+      localStorage.removeItem(environment.APP_USER_KEY);
+      return null;
+    } catch {
+      localStorage.removeItem(environment.APP_USER_KEY);
+      return null;
+    }
   }
 
   logout(): void {
