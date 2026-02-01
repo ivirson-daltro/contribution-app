@@ -107,27 +107,27 @@
                   ></mat-icon>
                 }
               </th>
-              <th (click)="changeSort('memberId')" class="sortable">
+              <th (click)="changeSort('memberName')" class="sortable">
                 Membro
-                @if (sortBy === 'memberId') {
+                @if (sortBy === 'memberName') {
                   <mat-icon
                     class="sort-icon"
                     fontIcon="{{ sortDirection === 'asc' ? 'arrow_upward' : 'arrow_downward' }}"
                   ></mat-icon>
                 }
               </th>
-              <th (click)="changeSort('contributionTypeId')" class="sortable">
+              <th (click)="changeSort('contributionTypeType')" class="sortable">
                 Tipo
-                @if (sortBy === 'contributionTypeId') {
+                @if (sortBy === 'contributionTypeType') {
                   <mat-icon
                     class="sort-icon"
                     fontIcon="{{ sortDirection === 'asc' ? 'arrow_upward' : 'arrow_downward' }}"
                   ></mat-icon>
                 }
               </th>
-              <th (click)="changeSort('paymentMethodId')" class="sortable">
+              <th (click)="changeSort('paymentMethodDescription')" class="sortable">
                 Pagamento
-                @if (sortBy === 'paymentMethodId') {
+                @if (sortBy === 'paymentMethodDescription') {
                   <mat-icon
                     class="sort-icon"
                     fontIcon="{{ sortDirection === 'asc' ? 'arrow_upward' : 'arrow_downward' }}"

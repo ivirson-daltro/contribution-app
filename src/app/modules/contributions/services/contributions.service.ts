@@ -36,13 +36,7 @@ export class ContributionsService {
     paymentMethodId: string | null,
     page = 1,
     limit = 10,
-    sortBy?:
-      | 'date'
-      | 'amount'
-      | 'createdAt'
-      | 'memberId'
-      | 'paymentMethodId'
-      | 'contributionTypeId',
+    sortBy?: 'date' | 'amount' | 'memberName' | 'paymentMethodDescription' | 'contributionTypeType',
     sortDirection: 'asc' | 'desc' = 'desc',
   ): Observable<PaginatedResponse<Contribution>> {
     let params = new HttpParams().set('page', page.toString()).set('limit', limit.toString());

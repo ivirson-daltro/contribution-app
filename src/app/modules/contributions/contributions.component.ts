@@ -53,7 +53,7 @@ export class ContributionsComponent implements OnInit {
   totalContributions = 0;
   pageIndex = 0; // índice baseado em 0
   pageSize = 10;
-  sortBy: 'date' | 'amount' | 'createdAt' | 'memberId' | 'paymentMethodId' | 'contributionTypeId' =
+  sortBy: 'date' | 'amount' | 'memberName' | 'paymentMethodDescription' | 'contributionTypeType' =
     'date';
   sortDirection: 'asc' | 'desc' = 'desc';
 
@@ -133,7 +133,7 @@ export class ContributionsComponent implements OnInit {
   }
 
   changeSort(
-    field: 'date' | 'amount' | 'createdAt' | 'memberId' | 'paymentMethodId' | 'contributionTypeId',
+    field: 'date' | 'amount' | 'memberName' | 'paymentMethodDescription' | 'contributionTypeType',
   ): void {
     if (this.sortBy === field) {
       this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
