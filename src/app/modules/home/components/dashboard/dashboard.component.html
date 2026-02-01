@@ -52,7 +52,7 @@
     <div class="col-12 col-md-6 col-xl-3">
       <app-summary-card
         [title]="'Membros Ativos'"
-        subtitle="Membros contribuintes"
+        [subtitle]="dashboardSummary?.totalMembersContributing + ' membros contribuintes'"
         [amount]="dashboardSummary?.totalMembers ?? 0"
         iconSrc="icons/users.svg"
         iconAlt="Ícone de usuários"

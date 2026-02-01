@@ -63,20 +63,20 @@ export class AddMembersComponent implements OnInit {
 
   buildForm(): void {
     this.form = this.fb.group({
-      name: ['', Validators.required],
-      memberTypeId: ['', Validators.required],
-      phone: [''],
-      email: [''],
-      genre: [''],
-      birthDate: [''],
-      entryDate: [''],
-      baptismDate: [''],
-      zipCode: [''],
-      street: [''],
-      number: [''],
-      complement: [''],
-      city: [''],
-      state: [''],
+      name: [null, Validators.required],
+      memberTypeId: [null, Validators.required],
+      phone: [null],
+      email: [null],
+      genre: [null],
+      birthDate: [null],
+      entryDate: [null],
+      baptismDate: [null],
+      zipCode: [null],
+      street: [null],
+      number: [null],
+      complement: [null],
+      city: [null],
+      state: [null],
     });
   }
 
