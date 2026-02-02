@@ -12,6 +12,7 @@ import { CommonModule } from '@angular/common';
 import { Chart, ChartConfiguration, ChartOptions, registerables } from 'chart.js';
 import { PaymentMethodPeriodTotals } from '../../../../models/dashboard-data.model';
 import { Observable } from 'rxjs';
+import { WeekType } from '../../../../constants/week-type.enum';
 
 Chart.register(...registerables);
 
@@ -26,7 +27,7 @@ export class PaymentMethodChartComponent implements AfterViewInit, OnChanges, On
   @ViewChild('chartCanvas') chartCanvas?: ElementRef<HTMLCanvasElement>;
 
   @Input() totals: PaymentMethodPeriodTotals[] | null | undefined;
-  @Input() period: 'weekly' | 'monthly' = 'monthly';
+  @Input() period: WeekType = WeekType.CURRENT_WEEK;
 
   dashboardSummaryChart?: PaymentMethodPeriodTotals[];
 
@@ -91,7 +92,7 @@ export class PaymentMethodChartComponent implements AfterViewInit, OnChanges, On
     });
 
     const datasets = items.map((item) => {
-      const value = this.period === 'weekly' ? item.weeklyTotal : item.monthlyTotal;
+      const value = this.period === WeekType.LAST_WEEK ? item.lastWeekTotal : item.currentWeekTotal;
 
       return {
         label: item.type,

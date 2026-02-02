@@ -2,6 +2,8 @@ export interface DashboardSummary {
   totalContributions: number;
   totalWeeklyContributions: number;
   totalMonthlyContributions: number;
+  totalLastWeekContributions: number;
+  totalLastWeekAmount: number;
   totalAmount: number;
   totalWeeklyAmount: number;
   totalMonthlyAmount: number;
@@ -28,6 +30,7 @@ export interface PaymentMethodPeriodTotals {
   paymentMethodId: string;
   type: string;
   description: string;
-  weeklyTotal: number;
-  monthlyTotal: number;
+  currentWeekTotal: number;
+  currentMonthTotal: number;
+  lastWeekTotal: number;
 }

@@ -9,6 +9,7 @@ import { DashboardService } from '../../services/dashboard.service';
 import { MonthlyContributionsChartComponent } from './components/monthly-contributions-chart/monthly-contributions-chart.component';
 import { PaymentMethodChartComponent } from './components/payment-method-chart/payment-method-chart.component';
 import { SummaryCardComponent } from './components/summary-card/summary-card.component';
+import { WeekType } from '../../constants/week-type.enum';
 
 @Component({
   selector: 'app-dashboard',
@@ -33,9 +34,11 @@ export class DashboardComponent {
   dashboardSummaryChart$?: Observable<PaymentMethodPeriodTotals[]> =
     this.dashboardService.getDashboardPaymentMethods();
 
-  selectedPaymentPeriod: 'weekly' | 'monthly' = 'monthly';
+  selectedPaymentPeriod: WeekType = WeekType.CURRENT_WEEK;
 
-  setPaymentPeriod(period: 'weekly' | 'monthly'): void {
+  weekType = WeekType;
+
+  setPaymentPeriod(period: WeekType): void {
     this.selectedPaymentPeriod = period;
   }
 }

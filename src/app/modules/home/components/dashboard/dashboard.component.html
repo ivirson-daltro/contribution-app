@@ -92,17 +92,17 @@
               mat-stroked-button
               class="period-toggle-btn me-2"
               type="button"
-              (click)="setPaymentPeriod('weekly')"
+              (click)="setPaymentPeriod(weekType.LAST_WEEK)"
             >
-              Semana atual
+              Semana anterior
             </button>
             <button
               mat-stroked-button
               class="period-toggle-btn"
               type="button"
-              (click)="setPaymentPeriod('monthly')"
+              (click)="setPaymentPeriod(weekType.CURRENT_WEEK)"
             >
-              Mês atual
+              Semana atual
             </button>
           </div>
         </div>
