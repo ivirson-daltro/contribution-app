@@ -64,6 +64,53 @@
       font-weight: 600;
     }
   }
+
+  /* Autocomplete customizado */
+  .autocomplete-wrapper {
+    position: relative;
+    width: 100%;
+  }
+  .autocomplete-list {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 10;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 0 0 4px 4px;
+    max-height: 200px;
+    overflow-y: auto;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .autocomplete-list li {
+    padding: 8px 12px;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .autocomplete-list li:hover {
+    background: #f5f5f5;
+  }
+  .autocomplete-list li.selected {
+    background: #e3e3e3;
+    font-weight: bold;
+  }
+}
+
+/* Fundo branco no painel do Angular Material Autocomplete deste componente */
+:host ::ng-deep .cdk-overlay-pane .mat-mdc-autocomplete-panel {
+  background-color: #ffffff !important;
+}
+
+:host ::ng-deep .mat-mdc-option {
+  background-color: #ffffff;
+}
+
+:host ::ng-deep .mat-mdc-option.mdc-list-item--activated,
+:host ::ng-deep .mat-mdc-option.mdc-list-item--selected {
+  background-color: #f5f5f5;
 }
 
 @media (max-width: 600px) {

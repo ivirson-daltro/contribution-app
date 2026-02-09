@@ -13,7 +13,9 @@ export class LoadingService {
   show(): void {
     this.activeRequests++;
     if (this.activeRequests === 1) {
-      this.loadingSubject.next(true);
+      // Usamos microtask para evitar ExpressionChangedAfterItHasBeenCheckedError
+      // quando o loading é disparado dentro de hooks de ciclo de vida (ex: ngOnInit)
+      Promise.resolve().then(() => this.loadingSubject.next(true));
     }
   }
 
@@ -24,7 +26,7 @@ export class LoadingService {
 
     this.activeRequests--;
     if (this.activeRequests === 0) {
-      this.loadingSubject.next(false);
+      Promise.resolve().then(() => this.loadingSubject.next(false));
     }
   }
 }

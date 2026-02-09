@@ -1,31 +1,73 @@
 import { AsyncPipe } from '@angular/common';
-import { Component, inject, OnInit, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { Component, inject, Inject, OnInit } from '@angular/core';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import {
+  MAT_DIALOG_DATA,
+  MatDialog,
+  MatDialogModule,
+  MatDialogRef,
+} from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { NgxMaskDirective } from 'ngx-mask';
 import { first, Observable } from 'rxjs';
-import { ContributionType, Member, PaymentMethod } from '../../../home/models/domain.model';
+import { map, startWith, switchMap } from 'rxjs/operators';
+import {
+  Contribution,
+  ContributionType,
+  Member,
+  PaymentMethod,
+} from '../../../home/models/domain.model';
+import { AddMembersComponent } from '../../../members/components/add/add-members.component';
 import { ContributionsService } from '../../services/contributions.service';
 
 @Component({
   selector: 'app-add-contributions',
   standalone: true,
-  imports: [ReactiveFormsModule, MatDialogModule, MatIconModule, AsyncPipe],
+  imports: [
+    ReactiveFormsModule,
+    MatDialogModule,
+    MatIconModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatAutocompleteModule,
+    MatSelectModule,
+    AsyncPipe,
+    NgxMaskDirective,
+  ],
   templateUrl: './add-contributions.component.html',
   styleUrls: ['./add-contributions.component.scss'],
 })
 export class AddContributionComponent implements OnInit {
   private readonly contributionsService = inject(ContributionsService);
+  private readonly dialog = inject(MatDialog);
 
   form!: FormGroup;
 
   members$: Observable<Member[]> = this.contributionsService.getMembers();
+  filteredMembers$: Observable<Member[]> = new Observable<Member[]>();
   contributionTypes$: Observable<ContributionType[]> =
     this.contributionsService.getContributionTypes();
   paymentMethods$: Observable<PaymentMethod[]> = this.contributionsService.getPaymentMethods();
 
   private contributionTypesCache: ContributionType[] = [];
+
+  today = new Date();
+  maxDate: string = this.today.toISOString().substring(0, 10);
+
+  // Controle separado apenas para o texto digitado na busca de membro
+  memberSearchControl: FormControl<string> = new FormControl<string>('', {
+    nonNullable: true,
+  });
 
   constructor(
     private fb: FormBuilder,
@@ -37,6 +79,30 @@ export class AddContributionComponent implements OnInit {
     this.buildForm();
     this.loadContributionTypes();
     this.setupMemberValidation();
+
+    // Autocomplete: filtra membros conforme digita no campo de busca
+    this.filteredMembers$ = this.memberSearchControl.valueChanges.pipe(
+      startWith(''),
+      switchMap((value) =>
+        this.members$.pipe(
+          map((members) => {
+            const filterValue = typeof value === 'string' ? value.toLowerCase() : '';
+            if (!filterValue) return members;
+            return members.filter((member) => member.name.toLowerCase().includes(filterValue));
+          }),
+        ),
+      ),
+    );
+
+    // Formata o valor ao sair do campo
+    this.form.get('amount')?.valueChanges.subscribe((value) => {
+      if (value != null && value !== '') {
+        const formatted = this.formatAmountString(value);
+        if (formatted !== value) {
+          this.form.get('amount')?.setValue(formatted, { emitEvent: false });
+        }
+      }
+    });
 
     if (this.data) {
       // Aguarda todos os selects carregarem antes de preencher
@@ -53,9 +119,40 @@ export class AddContributionComponent implements OnInit {
           date: this.data.date ? this.data.date.substring(0, 10) : '',
           observation: this.data.observation ?? '',
         });
-        this.formatAmount();
+
+        // Preenche o texto da busca com o nome do membro selecionado (edição)
+        if (this.data.memberId) {
+          this.members$.pipe(first()).subscribe((members) => {
+            const found = members.find((m) => m.id === this.data.memberId);
+            if (found) {
+              this.memberSearchControl.setValue(found.name, { emitEvent: false });
+            }
+          });
+        }
       });
     }
+  }
+
+  // Quando seleciona um membro no autocomplete, guarda o id no form
+  onMemberSelected(member: Member): void {
+    this.form.get('memberId')?.setValue(member.id);
+    // Garante que o input mostre apenas o nome, sem disparar novo filtro
+    this.memberSearchControl.setValue(member.name, { emitEvent: false });
+  }
+
+  private formatAmountString(value: string): string {
+    if (!value) return '';
+    // Remove prefixo e espaços
+    let raw = value.replace(/R\$/g, '').replace(/\s/g, '');
+    // Se já tem vírgula, respeita as casas decimais digitadas
+    if (raw.includes(',')) {
+      const [int, dec] = raw.split(',');
+      if (dec && dec.length === 2) return `R$ ${int.replace(/\B(?=(\d{3})+(?!\d))/g, '.')},${dec}`;
+      if (dec && dec.length === 1) return `R$ ${int.replace(/\B(?=(\d{3})+(?!\d))/g, '.')},${dec}0`;
+      return `R$ ${int.replace(/\B(?=(\d{3})+(?!\d))/g, '.')},00`;
+    }
+    // Se não tem vírgula, adiciona ,00
+    return `R$ ${raw.replace(/\B(?=(\d{3})+(?!\d))/g, '.')},00`;
   }
 
   buildForm(): void {
@@ -64,80 +161,52 @@ export class AddContributionComponent implements OnInit {
       contributionTypeId: ['', Validators.required],
       paymentMethodId: ['', Validators.required],
       amount: ['', [Validators.required]],
-      date: ['', Validators.required],
+      date: [this.today.toISOString().substring(0, 10), Validators.required],
       observation: [''],
     });
   }
 
   submit(): void {
-    this.saveContribution();
-  }
-
-  saveContribution(): void {
     const raw = this.form.getRawValue();
-    const amount = this.parseAmount(raw.amount);
-    const contributionData = {
+    // O valor de amount já virá limpo pelo ngx-mask (ex: 1234.56)
+    const payload: Contribution = {
       ...raw,
-      amount,
+      amount:
+        typeof raw.amount === 'string' ? parseFloat(raw.amount.replace(',', '.')) : raw.amount,
     };
     if (this.data && this.data.id) {
-      // Edição
-      this.contributionsService
-        .updateContribution(this.data.id, contributionData)
-        .pipe(first())
-        .subscribe({
-          next: () => {
-            this.dialogRef.close(true);
-          },
-          error: (error) => {
-            console.error('Error updating contribution:', error);
-          },
-        });
+      this.updateContribution(payload);
     } else {
-      // Novo
-      this.contributionsService
-        .saveContribution(contributionData)
-        .pipe(first())
-        .subscribe({
-          next: () => {
-            this.dialogRef.close(true);
-          },
-          error: (error) => {
-            console.error('Error saving contribution:', error);
-          },
-        });
+      this.saveContribution(payload);
     }
   }
 
-  formatAmount(): void {
-    const control = this.form.get('amount');
-    if (!control) {
-      return;
-    }
-
-    const formatted = this.formatCurrency(control.value);
-    if (formatted) {
-      control.setValue(formatted, { emitEvent: false });
-    }
+  updateContribution(contributionData: Contribution): void {
+    this.contributionsService
+      .updateContribution(this.data.id, contributionData)
+      .pipe(first())
+      .subscribe({
+        next: () => {
+          this.dialogRef.close(true);
+        },
+        error: (error) => {
+          console.error('Error updating contribution:', error);
+        },
+      });
   }
 
-  private parseAmount(value: unknown): number {
-    const parsed = this.toNumber(value);
-    return Number.isNaN(parsed) ? 0 : parsed;
-  }
-
-  private formatCurrency(value: unknown): string {
-    const parsed = this.toNumber(value);
-    if (Number.isNaN(parsed)) {
-      return '';
-    }
-
-    return new Intl.NumberFormat('pt-BR', {
-      style: 'currency',
-      currency: 'BRL',
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    }).format(parsed);
+  saveContribution(contributionData: Contribution): void {
+    this.contributionsService
+      .saveContribution(contributionData)
+      .pipe(first())
+      .subscribe({
+        next: () => {
+          this.dialogRef.close(true);
+        },
+        error: (error) => {
+          console.error('Error saving contribution:', error);
+        },
+      });
   }
 
   private loadContributionTypes(): void {
@@ -176,40 +245,41 @@ export class AddContributionComponent implements OnInit {
     return !!type && type.description?.toLowerCase() === 'oferta';
   }
 
-  private toNumber(value: unknown): number {
-    if (value == null) {
-      return NaN;
+  onAmountBlur(): void {
+    const control = this.form.get('amount');
+    if (!control) return;
+    let value = control.value;
+    if (!value) return;
+    // Remove prefixo e espaços
+    value = String(value).replace(/R\$/g, '').replace(/\s/g, '');
+    // Se já tem vírgula, ajusta casas decimais
+    if (value.includes(',')) {
+      const [int, dec] = value.split(',');
+      if (dec && dec.length === 2) {
+        control.setValue(`R$ ${int},${dec}`);
+      } else if (dec && dec.length === 1) {
+        control.setValue(`R$ ${int},${dec}0`);
+      } else {
+        control.setValue(`R$ ${int},00`);
+      }
+    } else {
+      // Não tem vírgula, adiciona ,00
+      control.setValue(`R$ ${value},00`);
     }
+  }
 
-    let raw = String(value).trim();
-    if (!raw) {
-      return NaN;
-    }
+  openNewMember(): void {
+    const dialogRef = this.dialog.open(AddMembersComponent, {
+      width: '720px',
+      maxWidth: '95vw',
+      autoFocus: false,
+    });
 
-    // Remove prefix e espaços
-    raw = raw.replace(/R\$/g, '').replace(/\s/g, '');
-
-    // Se já tiver vírgula (formato brasileiro) consideramos que já veio com casas decimais
-    if (raw.includes(',')) {
-      raw = raw.replace(/\./g, '').replace(',', '.');
-      return Number(raw);
-    }
-
-    // Se não tiver vírgula, tratamos como sequência de dígitos
-    const digits = raw.replace(/\D/g, '');
-    if (!digits) {
-      return NaN;
-    }
-
-    if (digits.length <= 2) {
-      // 1 -> 1,00  |  10 -> 10,00
-      return Number(digits);
-    }
-
-    // 100 -> 1,00  |  1000 -> 10,00  |  50007 -> 500,07
-    const intPart = digits.slice(0, digits.length - 2);
-    const fracPart = digits.slice(-2);
-    return Number(`${intPart}.${fracPart}`);
+    dialogRef.afterClosed().subscribe((result: unknown) => {
+      if (result) {
+        this.members$ = this.contributionsService.getMembers().pipe(first());
+      }
+    });
   }
 
   close(): void {
