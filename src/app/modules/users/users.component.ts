@@ -11,6 +11,7 @@ import { ToastService } from '../../shared/services/toast.service';
 import { AddUsersComponent } from './components/add/add-users.component';
 import { UsersService } from './services/users.service';
 import { User } from './models/user.model';
+import { UserRoles } from './constants/user-roles.enum';
 
 @Component({
   selector: 'app-users',
@@ -38,6 +39,8 @@ export class UsersComponent {
   pageSize = 10;
   sortBy: 'name' | 'email' | 'role' = 'name';
   sortDirection: 'asc' | 'desc' = 'asc';
+
+  userRoles = UserRoles;
 
   ngOnInit(): void {
     this.getUserList();

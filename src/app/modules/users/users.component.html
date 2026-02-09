@@ -61,7 +61,28 @@
                 <tr>
                   <td>{{ item.name }}</td>
                   <td>{{ item.email }}</td>
-                  <td>{{ item.role === 'ADMIN' ? 'Administrador' : 'Usuário' }}</td>
+                  <td>
+                    @switch (item.role) {
+                      @case (userRoles.ADMIN) {
+                        Administrador
+                      }
+                      @case (userRoles.TREASURER) {
+                        Tesoureiro(a)
+                      }
+                      @case (userRoles.SECRETARY) {
+                        Secretário(a)
+                      }
+                      @case (userRoles.FISCAL) {
+                        Conselho Fiscal
+                      }
+                      @case (userRoles.PRESIDENT) {
+                        Presidente
+                      }
+                      @default {
+                        Usuário
+                      }
+                    }
+                  </td>
                   <td class="text-center">
                     <button
                       class="rounded-button me-1"
