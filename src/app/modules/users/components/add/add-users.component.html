@@ -4,26 +4,30 @@
     <form [formGroup]="form" (ngSubmit)="submit()" class="contribution-form">
       <mat-dialog-content>
         <div class="mb-3">
-          <label class="form-label">Nome</label>
-          <input
-            type="text"
-            class="form-control"
-            placeholder="Digite o nome completo"
-            formControlName="name"
-          />
+          <div class="col-md-8">
+            <label for="memberId" class="form-label">Membro</label>
+            <input
+              type="text"
+              class="form-control"
+              matInput
+              placeholder="Buscar membro"
+              [formControl]="memberSearchControl"
+              [matAutocomplete]="autoMember"
+            />
+            <mat-autocomplete
+              #autoMember="matAutocomplete"
+              (optionSelected)="onMemberSelected($event.option.value)"
+            >
+              @for (member of filteredMembers$ | async; track $index) {
+                <mat-option [value]="member">
+                  {{ member.name }}
+                </mat-option>
+              }
+            </mat-autocomplete>
+          </div>
         </div>
 
-        <div class="mb-3">
-          <label class="form-label">Email</label>
-          <input
-            type="email"
-            class="form-control"
-            placeholder="seu@email.com"
-            formControlName="email"
-          />
-        </div>
-
-        <div class="row mb-3">
+        <!-- <div class="row mb-3">
           <div class="col-12 col-md-6">
             <label class="form-label">Senha</label>
             <input
@@ -42,7 +46,7 @@
               formControlName="confirmPassword"
             />
           </div>
-        </div>
+        </div> -->
 
         <div class="mb-4">
           <label class="form-label">Perfil</label>

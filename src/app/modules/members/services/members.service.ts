@@ -14,6 +14,10 @@ export class MembersService {
     return this.httpClient.get<MemberType[]>(`${environment.apiUrl}/domain/member-types`);
   }
 
+  getMembers(): Observable<Member[]> {
+    return this.httpClient.get<Member[]>(`${environment.apiUrl}/members`);
+  }
+
   getPaginatedMembers(
     page = 1,
     limit = 10,

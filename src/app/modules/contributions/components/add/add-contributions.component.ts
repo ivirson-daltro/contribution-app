@@ -14,7 +14,6 @@ import {
   MatDialogModule,
   MatDialogRef,
 } from '@angular/material/dialog';
-import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
@@ -28,6 +27,7 @@ import {
   PaymentMethod,
 } from '../../../home/models/domain.model';
 import { AddMembersComponent } from '../../../members/components/add/add-members.component';
+import { MembersService } from '../../../members/services/members.service';
 import { ContributionsService } from '../../services/contributions.service';
 
 @Component({
@@ -37,7 +37,6 @@ import { ContributionsService } from '../../services/contributions.service';
     ReactiveFormsModule,
     MatDialogModule,
     MatIconModule,
-    MatFormFieldModule,
     MatInputModule,
     MatAutocompleteModule,
     MatSelectModule,
@@ -49,11 +48,12 @@ import { ContributionsService } from '../../services/contributions.service';
 })
 export class AddContributionComponent implements OnInit {
   private readonly contributionsService = inject(ContributionsService);
+  private readonly membersService = inject(MembersService);
   private readonly dialog = inject(MatDialog);
 
   form!: FormGroup;
 
-  members$: Observable<Member[]> = this.contributionsService.getMembers();
+  members$: Observable<Member[]> = this.membersService.getMembers();
   filteredMembers$: Observable<Member[]> = new Observable<Member[]>();
   contributionTypes$: Observable<ContributionType[]> =
     this.contributionsService.getContributionTypes();
@@ -277,7 +277,7 @@ export class AddContributionComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result: unknown) => {
       if (result) {
-        this.members$ = this.contributionsService.getMembers().pipe(first());
+        this.members$ = this.membersService.getMembers().pipe(first());
       }
     });
   }

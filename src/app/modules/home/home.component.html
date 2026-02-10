@@ -74,10 +74,10 @@
 
     <div class="layout-sidenav__footer">
       <div class="user-card">
-        <div class="user-card__avatar">{{ user?.name?.charAt(0) }}</div>
+        <div class="user-card__avatar">{{ user?.member?.name?.charAt(0) }}</div>
         <div class="user-card__info">
-          <div class="user-card__name">{{ user?.name }}</div>
-          <div class="user-card__email">{{ user?.email }}</div>
+          <div class="user-card__name">{{ user?.member?.name }}</div>
+          <div class="user-card__email">{{ user?.member?.email }}</div>
           <span class="user-card__role">
             @switch (user?.role) {
               @case (userRoles.ADMIN) {

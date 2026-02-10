@@ -59,8 +59,8 @@
             } @else {
               @for (item of users; track item.id) {
                 <tr>
-                  <td>{{ item.name }}</td>
-                  <td>{{ item.email }}</td>
+                  <td>{{ item.member?.name }}</td>
+                  <td>{{ item.member?.email }}</td>
                   <td>
                     @switch (item.role) {
                       @case (userRoles.ADMIN) {

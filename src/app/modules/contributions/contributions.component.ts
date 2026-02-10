@@ -17,6 +17,7 @@ import { ConfirmModalComponent } from '../../shared/components/confirm-modal/con
 import { environment } from '../../../environments/environment';
 import { User } from '../users/models/user.model';
 import { UserRoles } from '../users/constants/user-roles.enum';
+import { MembersService } from '../members/services/members.service';
 
 @Component({
   selector: 'app-contributions',
@@ -35,8 +36,8 @@ import { UserRoles } from '../users/constants/user-roles.enum';
   styleUrls: ['./contributions.component.scss'],
 })
 export class ContributionsComponent implements OnInit {
-  private readonly dashboardService = inject(DashboardService);
   private readonly contributionsService = inject(ContributionsService);
+  private readonly membersService = inject(MembersService);
   private readonly dialog = inject(MatDialog);
   private readonly toastService = inject(ToastService);
 
@@ -44,7 +45,7 @@ export class ContributionsComponent implements OnInit {
   user: User | null = this.getUserFromLocalStorage();
   userRoles = UserRoles;
 
-  members$: Observable<Member[]> = this.contributionsService.getMembers();
+  members$: Observable<Member[]> = this.membersService.getMembers();
   contributionTypes$: Observable<ContributionType[]> =
     this.contributionsService.getContributionTypes();
   paymentMethods$: Observable<PaymentMethod[]> = this.contributionsService.getPaymentMethods();

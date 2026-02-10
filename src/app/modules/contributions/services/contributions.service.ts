@@ -5,7 +5,6 @@ import { environment } from '../../../../environments/environment';
 import {
   Contribution,
   ContributionType,
-  Member,
   PaginatedResponse,
   PaymentMethod,
 } from '../../home/models/domain.model';
@@ -15,10 +14,6 @@ import {
 })
 export class ContributionsService {
   private readonly httpClient = inject(HttpClient);
-
-  getMembers(): Observable<Member[]> {
-    return this.httpClient.get<Member[]>(`${environment.apiUrl}/members`);
-  }
 
   getContributionTypes(): Observable<ContributionType[]> {
     return this.httpClient.get<ContributionType[]>(
