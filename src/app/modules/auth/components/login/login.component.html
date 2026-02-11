@@ -18,14 +18,22 @@
         />
       </div>
 
-      <div class="mb-3">
+      <div class="mb-3 position-relative">
         <label class="form-label">Senha</label>
         <input
-          type="password"
-          class="form-control"
+          [type]="hidePassword ? 'password' : 'text'"
+          class="form-control pr-5"
           placeholder="Digite sua senha"
           formControlName="password"
         />
+        <button
+          type="button"
+          class="btn btn-sm btn-link password-toggle"
+          (click)="togglePasswordVisibility()"
+          tabindex="-1"
+        >
+          <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+        </button>
       </div>
 
       <div class="mb-4 d-flex align-items-center justify-content-between">

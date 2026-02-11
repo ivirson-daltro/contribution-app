@@ -23,6 +23,7 @@ export class LoginComponent implements OnInit {
   private readonly toastService = inject(ToastService);
 
   form!: FormGroup;
+  hidePassword = true;
 
   ngOnInit(): void {
     this.buildForm();
@@ -39,6 +40,10 @@ export class LoginComponent implements OnInit {
     if (savedEmail) {
       this.form.patchValue({ email: savedEmail, rememberMe: true });
     }
+  }
+
+  togglePasswordVisibility(): void {
+    this.hidePassword = !this.hidePassword;
   }
 
   submit(): void {

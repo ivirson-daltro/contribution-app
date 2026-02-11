@@ -29,9 +29,22 @@ export class ResetPasswordComponent implements OnInit {
   private readonly toastService = inject(ToastService);
 
   form!: FormGroup;
+  hidePassword = true;
+  hideConfirmPassword = true;
+  togglePasswordVisibility(): void {
+    this.hidePassword = !this.hidePassword;
+  }
+
+  toggleConfirmPasswordVisibility(): void {
+    this.hideConfirmPassword = !this.hideConfirmPassword;
+  }
 
   ngOnInit(): void {
     this.buildForm();
+
+    this.form.get('confirmPassword')?.valueChanges.subscribe(() => {
+      console.log(this.form);
+    });
   }
 
   buildForm(): void {
@@ -48,12 +61,12 @@ export class ResetPasswordComponent implements OnInit {
   private passwordMatchValidator: ValidatorFn = (
     control: AbstractControl,
   ): ValidationErrors | null => {
-    const password = control.get('password');
-    const confirmPassword = control.get('confirmPassword');
-
-    return password && confirmPassword && password.value !== confirmPassword.value
-      ? { passwordMismatch: true }
-      : null;
+    const password = control.get('password')?.value;
+    const confirmPassword = control.get('confirmPassword')?.value;
+    if (password && confirmPassword && password !== confirmPassword) {
+      return { passwordMismatch: true };
+    }
+    return null;
   };
 
   getTokenFromRoute(): string {
@@ -66,7 +79,7 @@ export class ResetPasswordComponent implements OnInit {
       return;
     }
 
-    const { password, confirmPassword } = this.form.getRawValue();
+    const { password } = this.form.getRawValue();
     const token = this.getTokenFromRoute();
 
     this.authService
