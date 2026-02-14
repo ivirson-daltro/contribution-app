@@ -18,6 +18,7 @@ export interface Contribution {
   date: string;
   observation?: string;
   createdAt: string;
+  attachmentUrl?: string;
 }
 
 export interface Member {

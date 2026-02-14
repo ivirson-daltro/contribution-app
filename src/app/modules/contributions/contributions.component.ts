@@ -261,4 +261,26 @@ export class ContributionsComponent implements OnInit {
         },
       });
   }
+
+  async downloadAttachment(url: string): Promise<void> {
+    this.utilsService.downloadAttachment(url).subscribe({
+      next: (blob) => {
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        // Tenta extrair o nome do arquivo da URL
+        const fileName = 'anexo' + new Date().getTime();
+        a.download = fileName;
+        document.body.appendChild(a);
+        a.click();
+        setTimeout(() => {
+          window.URL.revokeObjectURL(url);
+          document.body.removeChild(a);
+        }, 100);
+      },
+      error: () => {
+        this.toastService.error('Não foi possível baixar o arquivo.');
+      },
+    });
+  }
 }

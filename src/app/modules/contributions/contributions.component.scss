@@ -34,6 +34,27 @@
   }
 }
 
+.attachment-link {
+  border-radius: 0.625rem;
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #0b2454;
+  text-decoration: none;
+
+  &:hover {
+    background-color: #facc15;
+  }
+
+  mat-icon {
+    font-size: 1.25rem;
+    margin-left: 0.25rem;
+    margin-top: 0.25rem;
+  }
+}
+
 @media (max-width: 762px) {
   .btn-print {
     height: 4rem !important;

@@ -197,8 +197,8 @@ export class ExpensesComponent implements OnInit {
     this.loadExpenses();
   }
 
-  async downloadAttachment(item: Expense): Promise<void> {
-    this.expensesService.downloadAttachment(item).subscribe({
+  async downloadAttachment(url: string): Promise<void> {
+    this.utilsService.downloadAttachment(url).subscribe({
       next: (blob) => {
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement('a');

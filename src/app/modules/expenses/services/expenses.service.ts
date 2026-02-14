@@ -66,8 +66,4 @@ export class ExpensesService {
   deleteExpense(id: string): Observable<void> {
     return this.httpClient.delete<void>(`${environment.apiUrl}/expenses/${id}`);
   }
-
-  downloadAttachment(expense: Expense): Observable<Blob> {
-    return this.httpClient.get(expense.attachmentUrl!, { responseType: 'blob' });
-  }
 }

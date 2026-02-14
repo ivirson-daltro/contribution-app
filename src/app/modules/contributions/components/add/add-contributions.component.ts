@@ -30,6 +30,7 @@ import { AddMembersComponent } from '../../../members/components/add/add-members
 import { MembersService } from '../../../members/services/members.service';
 import { ContributionsService } from '../../services/contributions.service';
 import { UtilsService } from '../../../../shared/services/utils.service';
+import { ToastService } from '../../../../shared/services/toast.service';
 
 @Component({
   selector: 'app-add-contributions',
@@ -48,8 +49,10 @@ import { UtilsService } from '../../../../shared/services/utils.service';
   styleUrls: ['./add-contributions.component.scss'],
 })
 export class AddContributionComponent implements OnInit {
+  selectedFile: File | null = null;
   private readonly contributionsService = inject(ContributionsService);
   private readonly membersService = inject(MembersService);
+  private readonly toastService = inject(ToastService);
   private readonly dialog = inject(MatDialog);
   public readonly utilsService = inject(UtilsService);
 
@@ -170,43 +173,58 @@ export class AddContributionComponent implements OnInit {
 
   submit(): void {
     const raw = this.form.getRawValue();
-    // O valor de amount já virá limpo pelo ngx-mask (ex: 1234.56)
     const payload: Contribution = {
       ...raw,
       amount:
         typeof raw.amount === 'string' ? parseFloat(raw.amount.replace(',', '.')) : raw.amount,
     };
+
+    const formData = new FormData();
+    formData.append('contribution', JSON.stringify(payload));
+    if (this.selectedFile) {
+      formData.append('file', this.selectedFile);
+    }
+
     if (this.data && this.data.id) {
-      this.updateContribution(payload);
+      this.updateContribution(formData);
     } else {
-      this.saveContribution(payload);
+      this.saveContribution(formData);
     }
   }
 
-  updateContribution(contributionData: Contribution): void {
+  onFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      this.selectedFile = input.files[0];
+    } else {
+      this.selectedFile = null;
+    }
+  }
+
+  saveContribution(formData: FormData): void {
     this.contributionsService
-      .updateContribution(this.data!.id, contributionData)
+      .saveContribution(formData)
       .pipe(first())
       .subscribe({
         next: () => {
           this.dialogRef.close(true);
         },
         error: (error) => {
-          console.error('Error updating contribution:', error);
+          this.toastService.error('Erro ao salvar contribuição. Por favor, tente novamente.');
         },
       });
   }
 
-  saveContribution(contributionData: Contribution): void {
+  updateContribution(formData: FormData): void {
     this.contributionsService
-      .saveContribution(contributionData)
+      .updateContribution(this.data!.id, formData)
       .pipe(first())
       .subscribe({
         next: () => {
           this.dialogRef.close(true);
         },
         error: (error) => {
-          console.error('Error saving contribution:', error);
+          this.toastService.error('Erro ao atualizar contribuição. Por favor, tente novamente.');
         },
       });
   }

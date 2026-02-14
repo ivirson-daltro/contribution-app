@@ -138,7 +138,7 @@
                     @if (item.attachmentUrl) {
                       <a
                         href="#"
-                        (click)="downloadAttachment(item); $event.preventDefault()"
+                        (click)="downloadAttachment(item.attachmentUrl); $event.preventDefault()"
                         class="attachment-link"
                       >
                         <mat-icon fontIcon="attach_file"></mat-icon>

@@ -58,16 +58,16 @@ export class ContributionsService {
     );
   }
 
-  saveContribution(contributionData: Contribution): Observable<void> {
-    return this.httpClient.post<void>(`${environment.apiUrl}/contributions`, contributionData);
+  saveContribution(formData: FormData): Observable<void> {
+    return this.httpClient.post<void>(`${environment.apiUrl}/contributions`, formData);
   }
 
   getContributionById(id: string): Observable<Contribution> {
     return this.httpClient.get<Contribution>(`${environment.apiUrl}/contributions/${id}`);
   }
 
-  updateContribution(id: string, contributionData: Contribution): Observable<void> {
-    return this.httpClient.put<void>(`${environment.apiUrl}/contributions/${id}`, contributionData);
+  updateContribution(id: string, formData: FormData): Observable<void> {
+    return this.httpClient.put<void>(`${environment.apiUrl}/contributions/${id}`, formData);
   }
 
   deleteContribution(id: string): Observable<void> {

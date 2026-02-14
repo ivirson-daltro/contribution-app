@@ -1,10 +1,13 @@
-import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { inject, Injectable } from '@angular/core';
 import { FormGroup } from '@angular/forms';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UtilsService {
+  private readonly httpClient = inject(HttpClient);
   /**
    * Normaliza um valor monetário, removendo símbolos de moeda, espaços e convertendo vírgulas para pontos.
    * @param value valor monetário a ser normalizado
@@ -56,5 +59,9 @@ export class UtilsService {
       // Não tem vírgula, adiciona ,00
       control.setValue(`R$ ${value},00`);
     }
+  }
+
+  downloadAttachment(url: string): Observable<Blob> {
+    return this.httpClient.get(url, { responseType: 'blob' });
   }
 }
