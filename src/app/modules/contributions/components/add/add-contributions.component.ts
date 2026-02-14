@@ -29,6 +29,7 @@ import {
 import { AddMembersComponent } from '../../../members/components/add/add-members.component';
 import { MembersService } from '../../../members/services/members.service';
 import { ContributionsService } from '../../services/contributions.service';
+import { UtilsService } from '../../../../shared/services/utils.service';
 
 @Component({
   selector: 'app-add-contributions',
@@ -50,6 +51,7 @@ export class AddContributionComponent implements OnInit {
   private readonly contributionsService = inject(ContributionsService);
   private readonly membersService = inject(MembersService);
   private readonly dialog = inject(MatDialog);
+  public readonly utilsService = inject(UtilsService);
 
   form!: FormGroup;
 
@@ -72,7 +74,7 @@ export class AddContributionComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private dialogRef: MatDialogRef<AddContributionComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any,
+    @Inject(MAT_DIALOG_DATA) public data: Contribution | null,
   ) {}
 
   ngOnInit(): void {
@@ -112,18 +114,18 @@ export class AddContributionComponent implements OnInit {
         this.paymentMethods$.pipe(first()).toPromise(),
       ]).then(() => {
         this.form.patchValue({
-          memberId: this.data.memberId ?? '',
-          contributionTypeId: this.data.contributionTypeId ?? '',
-          paymentMethodId: this.data.paymentMethodId ?? '',
-          amount: this.data.amount ?? '',
-          date: this.data.date ? this.data.date.substring(0, 10) : '',
-          observation: this.data.observation ?? '',
+          memberId: this.data?.memberId ?? '',
+          contributionTypeId: this.data?.contributionTypeId ?? '',
+          paymentMethodId: this.data?.paymentMethodId ?? '',
+          amount: this.data?.amount ?? '',
+          date: this.data?.date ? this.data.date.substring(0, 10) : '',
+          observation: this.data?.observation ?? '',
         });
 
         // Preenche o texto da busca com o nome do membro selecionado (edição)
-        if (this.data.memberId) {
+        if (this.data?.memberId) {
           this.members$.pipe(first()).subscribe((members) => {
-            const found = members.find((m) => m.id === this.data.memberId);
+            const found = members.find((m) => m.id === this.data?.memberId);
             if (found) {
               this.memberSearchControl.setValue(found.name, { emitEvent: false });
             }
@@ -183,7 +185,7 @@ export class AddContributionComponent implements OnInit {
 
   updateContribution(contributionData: Contribution): void {
     this.contributionsService
-      .updateContribution(this.data.id, contributionData)
+      .updateContribution(this.data!.id, contributionData)
       .pipe(first())
       .subscribe({
         next: () => {
@@ -243,29 +245,6 @@ export class AddContributionComponent implements OnInit {
 
     const type = this.contributionTypesCache.find((t) => t.id === typeId);
     return !!type && type.description?.toLowerCase() === 'oferta';
-  }
-
-  onAmountBlur(): void {
-    const control = this.form.get('amount');
-    if (!control) return;
-    let value = control.value;
-    if (!value) return;
-    // Remove prefixo e espaços
-    value = String(value).replace(/R\$/g, '').replace(/\s/g, '');
-    // Se já tem vírgula, ajusta casas decimais
-    if (value.includes(',')) {
-      const [int, dec] = value.split(',');
-      if (dec && dec.length === 2) {
-        control.setValue(`R$ ${int},${dec}`);
-      } else if (dec && dec.length === 1) {
-        control.setValue(`R$ ${int},${dec}0`);
-      } else {
-        control.setValue(`R$ ${int},00`);
-      }
-    } else {
-      // Não tem vírgula, adiciona ,00
-      control.setValue(`R$ ${value},00`);
-    }
   }
 
   openNewMember(): void {

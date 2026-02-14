@@ -1,0 +1,74 @@
+.expenses {
+  background-color: var(--mat-sys-surface-container-lowest);
+
+  .panel {
+    padding: 1.25rem;
+    border-radius: 0.625rem;
+    box-shadow: 0 1px 1px rgba(15, 23, 42, 0.06);
+    border: 1px solid rgba(148, 163, 184, 0.25);
+    background-color: #ffffff;
+  }
+
+  .panel-title {
+    font-size: 1.15rem;
+    font-weight: 600;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    height: 2.5rem;
+    margin-top: 1.75rem;
+  }
+
+  .submit-button {
+    border-radius: 0.625rem;
+    background-color: #0b2454;
+    font-weight: 600;
+  }
+
+  .cancel-button {
+    color: #6b7280;
+  }
+
+  .attachment-link {
+    border-radius: 0.625rem;
+    width: 2rem;
+    height: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #0b2454;
+    text-decoration: none;
+
+    &:hover {
+      background-color: #facc15;
+    }
+
+    mat-icon {
+      font-size: 1.25rem;
+      margin-left: 0.25rem;
+      margin-top: 0.25rem;
+    }
+  }
+
+  // .attachment-link {
+  //   color: #0b2454;
+  //   text-decoration: none;
+
+  //   &:hover {
+  //     text-decoration: underline;
+  //     color: #0b2454;
+  //     background-color: #6b7280;
+  //   }
+  // }
+}
+
+@media (max-width: 762px) {
+  .btn-print {
+    height: 4rem !important;
+    padding: 1rem;
+  }
+}

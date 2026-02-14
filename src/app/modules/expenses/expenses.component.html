@@ -1,13 +1,13 @@
-<div class="contributions container-fluid py-4">
+<div class="expenses container-fluid py-4">
   <div class="row align-items-center mb-4">
     <div class="col-12 col-lg">
-      <h1 class="h4 mb-1 fw-semibold">Contribuições</h1>
-      <p class="text-muted small mb-0">Visualize e gerencie todas as contribuições</p>
+      <h1 class="h4 mb-1 fw-semibold">Despesas</h1>
+      <p class="text-muted small mb-0">Visualize e gerencie todas as despesas</p>
     </div>
     <div class="col-12 col-lg-auto">
       @if (user?.role === userRoles.ADMIN || user?.role === userRoles.TREASURER) {
-        <button type="button" class="btn btn-primary submit-button" (click)="openNewContribution()">
-          <mat-icon fontIcon="add" class="submit-icon"></mat-icon> Nova contribuição
+        <button type="button" class="btn btn-primary submit-button" (click)="openNewExpense()">
+          <mat-icon fontIcon="add" class="submit-icon"></mat-icon> Nova despesa
         </button>
       }
     </div>
@@ -21,31 +21,11 @@
       </h2>
       <div class="row mb-2">
         <div class="col-12 col-lg mb-3">
-          <label for="memberId" class="form-label">Membro</label>
-          <select class="form-control" [(ngModel)]="memberId">
+          <label for="categoryId" class="form-label">Categoria</label>
+          <select class="form-control" [(ngModel)]="categoryId">
             <option [value]="null" disabled selected>- Selecione</option>
-            @for ((member of members$ | async); track $index) {
-              <option [value]="member.id">{{ member.name }}</option>
-            }
-          </select>
-        </div>
-
-        <div class="col-12 col-lg mb-3">
-          <label for="contributionTypeId" class="form-label">Tipo</label>
-          <select class="form-control" [(ngModel)]="contributionTypeId">
-            <option [value]="null" disabled selected>- Selecione</option>
-            @for ((type of contributionTypes$ | async); track $index) {
-              <option [value]="type.id">{{ type.description }}</option>
-            }
-          </select>
-        </div>
-
-        <div class="col-12 col-lg mb-3">
-          <label for="paymentMethodId" class="form-label">Pagamento</label>
-          <select class="form-control" [(ngModel)]="paymentMethodId">
-            <option [value]="null" disabled selected>- Selecione</option>
-            @for ((method of paymentMethods$ | async); track $index) {
-              <option [value]="method.id">{{ method.type }}</option>
+            @for ((category of categories$ | async); track $index) {
+              <option [value]="category.id">{{ category.name }}</option>
             }
           </select>
         </div>
@@ -67,10 +47,10 @@
             <button
               type="button"
               class="btn btn-primary submit-button btn-print"
-              (click)="getWeeklyReport()"
+              (click)="getMonthlyReport()"
             >
-              <mat-icon fontIcon="print" class="submit-icon"></mat-icon> Imprimir Relatório da
-              semana
+              <mat-icon fontIcon="print" class="submit-icon"></mat-icon> Imprimir Relatório de
+              despesas do mês
             </button>
           }
         </div>
@@ -78,11 +58,7 @@
           <button type="button" class="btn cancel-button" (click)="limpar()">
             <mat-icon fontIcon="clear" class="submit-icon"></mat-icon> Limpar
           </button>
-          <button
-            type="submit"
-            class="btn btn-primary submit-button"
-            (click)="getContributionList()"
-          >
+          <button type="submit" class="btn btn-primary submit-button" (click)="loadExpenses()">
             <mat-icon fontIcon="search" class="submit-icon"></mat-icon> Pesquisar
           </button>
         </div>
@@ -93,12 +69,12 @@
   <!-- Grid -->
   <div class="col-12 mb-4">
     <mat-card class="panel h-100">
-      <h2 class="panel-title mb-3">Contribuições</h2>
+      <h2 class="panel-title mb-3">Despesas</h2>
       <div class="table-responsive">
         <table class="table table-striped table-hover align-middle mb-0">
           <thead class="table-light">
             <tr>
-              <th (click)="changeSort('date')" class="sortable">
+              <th (click)="changeSort('date')" class="sortable text-center">
                 Data
                 @if (sortBy === 'date') {
                   <mat-icon
@@ -107,36 +83,28 @@
                   ></mat-icon>
                 }
               </th>
-              <th (click)="changeSort('memberName')" class="sortable">
-                Membro
-                @if (sortBy === 'memberName') {
-                  <mat-icon
-                    class="sort-icon"
-                    fontIcon="{{ sortDirection === 'asc' ? 'arrow_upward' : 'arrow_downward' }}"
-                  ></mat-icon>
-                }
-              </th>
-              <th (click)="changeSort('contributionTypeType')" class="sortable">
-                Tipo
-                @if (sortBy === 'contributionTypeType') {
-                  <mat-icon
-                    class="sort-icon"
-                    fontIcon="{{ sortDirection === 'asc' ? 'arrow_upward' : 'arrow_downward' }}"
-                  ></mat-icon>
-                }
-              </th>
-              <th (click)="changeSort('paymentMethodDescription')" class="sortable">
-                Pagamento
-                @if (sortBy === 'paymentMethodDescription') {
-                  <mat-icon
-                    class="sort-icon"
-                    fontIcon="{{ sortDirection === 'asc' ? 'arrow_upward' : 'arrow_downward' }}"
-                  ></mat-icon>
-                }
-              </th>
-              <th (click)="changeSort('amount')" class="sortable">
+              <th (click)="changeSort('value')" class="sortable text-center">
                 Valor
-                @if (sortBy === 'amount') {
+                @if (sortBy === 'value') {
+                  <mat-icon
+                    class="sort-icon"
+                    fontIcon="{{ sortDirection === 'asc' ? 'arrow_upward' : 'arrow_downward' }}"
+                  ></mat-icon>
+                }
+              </th>
+              <th (click)="changeSort('categoryId')" class="sortable text-center">
+                Categoria
+                @if (sortBy === 'categoryId') {
+                  <mat-icon
+                    class="sort-icon"
+                    fontIcon="{{ sortDirection === 'asc' ? 'arrow_upward' : 'arrow_downward' }}"
+                  ></mat-icon>
+                }
+              </th>
+              <th class="text-center">Anexo</th>
+              <th (click)="changeSort('categoryId')" class="sortable text-center">
+                Observações
+                @if (sortBy === 'categoryId') {
                   <mat-icon
                     class="sort-icon"
                     fontIcon="{{ sortDirection === 'asc' ? 'arrow_upward' : 'arrow_downward' }}"
@@ -149,39 +117,51 @@
             </tr>
           </thead>
           <tbody>
-            @if (contributions.length === 0) {
+            @if (expenses.length === 0) {
               <tr>
                 <td colspan="6" class="text-center text-muted small py-4">
-                  Nenhuma contribuição encontrada.
+                  Nenhuma despesa encontrada.
                 </td>
               </tr>
             } @else {
-              @for (item of contributions; track item.id) {
+              @for (item of expenses; track item.id) {
                 <tr>
-                  <td>{{ item.date | date: 'shortDate' : 'pt-BR' }}</td>
-                  <td>{{ item.member?.name ?? '-' }}</td>
-                  <td>{{ item.contributionType.description }}</td>
-                  <td>{{ item.paymentMethod.type }}</td>
-                  <td>
+                  <td class="text-center">{{ item.date | date: 'shortDate' : 'pt-BR' }}</td>
+                  <td class="text-center">
                     {{
-                      utilsService.normalizeAmount(item.amount)
+                      utilsService.normalizeAmount(item.value)
                         | currency: 'BRL' : 'symbol' : '1.2-2' : 'pt-BR'
                     }}
                   </td>
+                  <td class="text-center">{{ item.category.name }}</td>
+                  <td class="d-flex justify-content-center">
+                    @if (item.attachmentUrl) {
+                      <a
+                        href="#"
+                        (click)="downloadAttachment(item); $event.preventDefault()"
+                        class="attachment-link"
+                      >
+                        <mat-icon fontIcon="attach_file"></mat-icon>
+                      </a>
+                    } @else {
+                      <span class="text-muted">-</span>
+                    }
+                  </td>
+                  <td class="text-center">{{ item.notes }}</td>
                   @if (user?.role === userRoles.ADMIN || user?.role === userRoles.TREASURER) {
                     <td class="text-center">
                       <button
                         class="rounded-button me-1"
-                        aria-label="Editar Contribuição"
-                        (click)="editContribution(item.id)"
+                        aria-label="Editar Despesa"
+                        (click)="editExpense(item.id)"
                       >
                         <mat-icon fontIcon="edit"></mat-icon>
                       </button>
 
                       <button
                         class="rounded-button"
-                        aria-label="Excluir Contribuição"
-                        (click)="deleteContribution(item.id)"
+                        aria-label="Excluir Despesa"
+                        (click)="deleteExpense(item.id)"
                       >
                         <mat-icon fontIcon="delete"></mat-icon>
                       </button>
@@ -196,9 +176,7 @@
 
       <div class="row">
         <div class="col-12 col-lg-6">
-          <p class="me-5 mb-3 mt-4">
-            <strong>Total de contribuições:</strong> {{ totalContributions }}
-          </p>
+          <p class="me-5 mb-3 mt-4"><strong>Total de despesas:</strong> {{ totalExpenses }}</p>
         </div>
         <div class="col-12 col-lg-6">
           @if (totalPages > 1) {

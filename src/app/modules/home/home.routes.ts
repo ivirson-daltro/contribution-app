@@ -18,6 +18,10 @@ export const HOME_ROUTES: Routes = [
           import('./../contributions/contributions.routes').then((m) => m.CONTRIBUTIONS_ROUTES),
       },
       {
+        path: 'expenses',
+        loadChildren: () => import('./../expenses/expenses.routes').then((m) => m.EXPENSES_ROUTES),
+      },
+      {
         path: 'members',
         loadChildren: () => import('./../members/members.routes').then((m) => m.MEMBERS_ROUTES),
       },

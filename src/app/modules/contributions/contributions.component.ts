@@ -18,6 +18,7 @@ import { environment } from '../../../environments/environment';
 import { User } from '../users/models/user.model';
 import { UserRoles } from '../users/constants/user-roles.enum';
 import { MembersService } from '../members/services/members.service';
+import { UtilsService } from '../../shared/services/utils.service';
 
 @Component({
   selector: 'app-contributions',
@@ -40,6 +41,7 @@ export class ContributionsComponent implements OnInit {
   private readonly membersService = inject(MembersService);
   private readonly dialog = inject(MatDialog);
   private readonly toastService = inject(ToastService);
+  public readonly utilsService = inject(UtilsService);
 
   form!: FormGroup;
   user: User | null = this.getUserFromLocalStorage();
@@ -152,26 +154,6 @@ export class ContributionsComponent implements OnInit {
     this.contributionTypeId = null;
     this.paymentMethodId = null;
     this.getContributionList(0, this.pageSize);
-  }
-
-  normalizeAmount(value: unknown): number {
-    if (value == null) {
-      return 0;
-    }
-
-    let raw = String(value).trim();
-    if (!raw) {
-      return 0;
-    }
-
-    raw = raw.replace(/R\$/g, '').replace(/\s/g, '');
-
-    if (raw.includes(',')) {
-      raw = raw.replace(/\./g, '').replace(',', '.');
-    }
-
-    const parsed = Number(raw);
-    return Number.isNaN(parsed) ? 0 : parsed;
   }
 
   getWeeklyReport(): void {

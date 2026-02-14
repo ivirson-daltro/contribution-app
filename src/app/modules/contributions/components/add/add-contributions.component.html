@@ -79,7 +79,7 @@
                 inputMode="decimal"
                 autocomplete="off"
                 [dropSpecialCharacters]="true"
-                (blur)="onAmountBlur()"
+                (blur)="utilsService.onAmountBlur(form, 'amount')"
               />
             </div>
 
