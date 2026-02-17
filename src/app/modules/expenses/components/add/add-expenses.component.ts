@@ -8,11 +8,11 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { NgxMaskDirective } from 'ngx-mask';
 import { Observable } from 'rxjs';
+import { ToastService } from '../../../../shared/services/toast.service';
+import { UtilsService } from '../../../../shared/services/utils.service';
 import { ExpenseCategory } from '../../models/expense-category.model';
 import { Expense } from '../../models/expense.model';
 import { ExpensesService } from '../../services/expenses.service';
-import { UtilsService } from '../../../../shared/services/utils.service';
-import { ToastService } from '../../../../shared/services/toast.service';
 
 @Component({
   selector: 'app-add-expenses',
@@ -35,8 +35,6 @@ export class AddExpensesComponent implements OnInit {
   public readonly utilsService = inject(UtilsService);
   public readonly toastService = inject(ToastService);
   private readonly fb = inject(FormBuilder);
-  private dialogRef: MatDialogRef<AddExpensesComponent> = inject(MatDialogRef);
-  @Inject(MAT_DIALOG_DATA) public data: Expense | null = null;
 
   form!: FormGroup;
 
@@ -44,6 +42,11 @@ export class AddExpensesComponent implements OnInit {
 
   today = new Date();
   maxDate: string = this.today.toISOString().substring(0, 10);
+
+  constructor(
+    private dialogRef: MatDialogRef<AddExpensesComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: Expense | null,
+  ) {}
 
   ngOnInit(): void {
     this.buildForm();
@@ -83,7 +86,12 @@ export class AddExpensesComponent implements OnInit {
       formData.append('file', this.selectedFile);
     }
 
-    this.saveExpense(formData);
+    if (this.data) {
+      formData.append('id', this.data.id);
+      this.updateExpense(formData, this.data.id);
+    } else {
+      this.saveExpense(formData);
+    }
   }
 
   saveExpense(formData: FormData): void {
@@ -97,6 +105,17 @@ export class AddExpensesComponent implements OnInit {
     });
   }
 
+  updateExpense(formData: FormData, id: string): void {
+    this.expensesService.updateExpense(formData, id).subscribe({
+      next: () => {
+        this.dialogRef.close(true);
+      },
+      error: (err) => {
+        this.toastService.error('Erro ao atualizar despesa. Por favor, tente novamente.');
+      },
+    });
+  }
+
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
@@ -104,6 +123,10 @@ export class AddExpensesComponent implements OnInit {
     } else {
       this.selectedFile = null;
     }
+  }
+
+  async downloadAttachment(url: string): Promise<void> {
+    this.utilsService.downloadAttachment(url);
   }
 
   close(): void {

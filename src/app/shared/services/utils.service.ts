@@ -2,12 +2,14 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Observable } from 'rxjs';
+import { ToastService } from './toast.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UtilsService {
   private readonly httpClient = inject(HttpClient);
+  private readonly toastService = inject(ToastService);
   /**
    * Normaliza um valor monetário, removendo símbolos de moeda, espaços e convertendo vírgulas para pontos.
    * @param value valor monetário a ser normalizado
@@ -61,7 +63,28 @@ export class UtilsService {
     }
   }
 
-  downloadAttachment(url: string): Observable<Blob> {
-    return this.httpClient.get(url, { responseType: 'blob' });
+  // downloadAttachment(url: string): Observable<Blob> {
+  //   return this.httpClient.get(url, { responseType: 'blob' });
+  // }
+
+  downloadAttachment(url: string): void {
+    this.httpClient.get(url, { responseType: 'blob' }).subscribe({
+      next: (blob) => {
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        const fileName = 'anexo' + new Date().getTime();
+        a.download = fileName;
+        document.body.appendChild(a);
+        a.click();
+        setTimeout(() => {
+          window.URL.revokeObjectURL(url);
+          document.body.removeChild(a);
+        }, 100);
+      },
+      error: () => {
+        this.toastService.error('Não foi possível baixar o arquivo.');
+      },
+    });
   }
 }

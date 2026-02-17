@@ -1,3 +1,4 @@
+import { AsyncPipe, CurrencyPipe, DatePipe } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { FormGroup, FormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
@@ -5,15 +6,14 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { first } from 'rxjs';
 import { environment } from '../../../environments/environment';
+import { ConfirmModalComponent } from '../../shared/components/confirm-modal/confirm-modal.component';
 import { ToastService } from '../../shared/services/toast.service';
+import { UtilsService } from '../../shared/services/utils.service';
 import { UserRoles } from '../users/constants/user-roles.enum';
 import { User } from '../users/models/user.model';
+import { AddExpensesComponent } from './components/add/add-expenses.component';
 import { Expense } from './models/expense.model';
 import { ExpensesService } from './services/expenses.service';
-import { AsyncPipe, CurrencyPipe, DatePipe } from '@angular/common';
-import { UtilsService } from '../../shared/services/utils.service';
-import { AddExpensesComponent } from './components/add/add-expenses.component';
-import { ConfirmModalComponent } from '../../shared/components/confirm-modal/confirm-modal.component';
 
 @Component({
   selector: 'app-expenses',
@@ -127,31 +127,20 @@ export class ExpensesComponent implements OnInit {
     this.loadExpenses(0, this.pageSize);
   }
 
-  editExpense(expenseId: string): void {
-    this.expensesService
-      .getById(expenseId)
-      .pipe(first())
-      .subscribe({
-        next: (expense) => {
-          const dialogRef = this.dialog.open(AddExpensesComponent, {
-            width: '720px',
-            maxWidth: '95vw',
-            autoFocus: false,
-            data: expense,
-          });
-          dialogRef.afterClosed().subscribe((result: unknown) => {
-            if (result) {
-              this.loadExpenses();
-            }
-          });
-        },
-        error: (error) => {
-          this.toastService.error(
-            error.error.error || 'Erro desconhecido',
-            'Erro ao buscar dados da despesa',
-          );
-        },
-      });
+  editExpense(expense: Expense): void {
+    console.log(expense);
+
+    const dialogRef = this.dialog.open(AddExpensesComponent, {
+      width: '720px',
+      maxWidth: '95vw',
+      autoFocus: false,
+      data: expense,
+    });
+    dialogRef.afterClosed().subscribe((result: unknown) => {
+      if (result) {
+        this.loadExpenses();
+      }
+    });
   }
 
   deleteExpense(expenseId: string): void {
@@ -198,24 +187,6 @@ export class ExpensesComponent implements OnInit {
   }
 
   async downloadAttachment(url: string): Promise<void> {
-    this.utilsService.downloadAttachment(url).subscribe({
-      next: (blob) => {
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        // Tenta extrair o nome do arquivo da URL
-        const fileName = 'anexo' + new Date().getTime();
-        a.download = fileName;
-        document.body.appendChild(a);
-        a.click();
-        setTimeout(() => {
-          window.URL.revokeObjectURL(url);
-          document.body.removeChild(a);
-        }, 100);
-      },
-      error: () => {
-        this.toastService.error('Não foi possível baixar o arquivo.');
-      },
-    });
+    this.utilsService.downloadAttachment(url);
   }
 }
