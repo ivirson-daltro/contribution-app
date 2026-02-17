@@ -40,7 +40,8 @@ export const authGuard: CanActivateFn = (route, state) => {
       UserRoles.FISCAL,
     ],
     '/users': [UserRoles.ADMIN],
-    '/contributions': [UserRoles.ADMIN, UserRoles.FISCAL, UserRoles.TREASURER],
+    '/contributions': [UserRoles.ADMIN, UserRoles.FISCAL, UserRoles.TREASURER, UserRoles.PRESIDENT],
+    '/expenses': [UserRoles.ADMIN, UserRoles.FISCAL, UserRoles.TREASURER, UserRoles.PRESIDENT],
   };
 
   // Descobre o path base da rota
