@@ -107,6 +107,19 @@
                 (change)="onFileSelected($event)"
                 accept=".pdf,.jpg,.jpeg,.png,.doc,.docx,.xls,.xlsx"
               />
+              <!-- Exibe o arquivo já anexado ao editar -->
+              @if (data?.attachmentUrl && !selectedFile) {
+                <div class="mt-2">
+                  <a
+                    href="#"
+                    (click)="downloadAttachment(data?.attachmentUrl!); $event.preventDefault()"
+                    class="attachment-link"
+                  >
+                    <mat-icon fontIcon="attach_file"></mat-icon>
+                    Baixar arquivo atual
+                  </a>
+                </div>
+              }
             </div>
           </div>
         </div>

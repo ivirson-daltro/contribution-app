@@ -31,6 +31,7 @@ import { MembersService } from '../../../members/services/members.service';
 import { ContributionsService } from '../../services/contributions.service';
 import { UtilsService } from '../../../../shared/services/utils.service';
 import { ToastService } from '../../../../shared/services/toast.service';
+import { TipoAnexo } from '../../../../shared/constants/tipo-anexo.enum';
 
 @Component({
   selector: 'app-add-contributions',
@@ -277,6 +278,10 @@ export class AddContributionComponent implements OnInit {
         this.members$ = this.membersService.getMembers().pipe(first());
       }
     });
+  }
+
+  async downloadAttachment(url: string): Promise<void> {
+    this.utilsService.downloadAttachment(url, TipoAnexo.CONTRIBUICAO);
   }
 
   close(): void {

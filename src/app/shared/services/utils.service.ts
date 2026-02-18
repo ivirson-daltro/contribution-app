@@ -3,6 +3,7 @@ import { inject, Injectable } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { ToastService } from './toast.service';
+import { TipoAnexo } from '../constants/tipo-anexo.enum';
 
 @Injectable({
   providedIn: 'root',
@@ -67,13 +68,13 @@ export class UtilsService {
   //   return this.httpClient.get(url, { responseType: 'blob' });
   // }
 
-  downloadAttachment(url: string): void {
+  downloadAttachment(url: string, tipo: TipoAnexo): void {
     this.httpClient.get(url, { responseType: 'blob' }).subscribe({
       next: (blob) => {
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        const fileName = 'anexo' + new Date().getTime();
+        const fileName = `${tipo}_${new Date().getTime()}`;
         a.download = fileName;
         document.body.appendChild(a);
         a.click();

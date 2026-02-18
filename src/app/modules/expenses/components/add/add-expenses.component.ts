@@ -13,6 +13,7 @@ import { UtilsService } from '../../../../shared/services/utils.service';
 import { ExpenseCategory } from '../../models/expense-category.model';
 import { Expense } from '../../models/expense.model';
 import { ExpensesService } from '../../services/expenses.service';
+import { TipoAnexo } from '../../../../shared/constants/tipo-anexo.enum';
 
 @Component({
   selector: 'app-add-expenses',
@@ -126,7 +127,7 @@ export class AddExpensesComponent implements OnInit {
   }
 
   async downloadAttachment(url: string): Promise<void> {
-    this.utilsService.downloadAttachment(url);
+    this.utilsService.downloadAttachment(url, TipoAnexo.DESPESA);
   }
 
   close(): void {

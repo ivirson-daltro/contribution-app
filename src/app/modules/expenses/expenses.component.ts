@@ -14,6 +14,7 @@ import { User } from '../users/models/user.model';
 import { AddExpensesComponent } from './components/add/add-expenses.component';
 import { Expense } from './models/expense.model';
 import { ExpensesService } from './services/expenses.service';
+import { TipoAnexo } from '../../shared/constants/tipo-anexo.enum';
 
 @Component({
   selector: 'app-expenses',
@@ -187,6 +188,6 @@ export class ExpensesComponent implements OnInit {
   }
 
   async downloadAttachment(url: string): Promise<void> {
-    this.utilsService.downloadAttachment(url);
+    this.utilsService.downloadAttachment(url, TipoAnexo.DESPESA);
   }
 }

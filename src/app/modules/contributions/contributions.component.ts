@@ -19,6 +19,7 @@ import { User } from '../users/models/user.model';
 import { UserRoles } from '../users/constants/user-roles.enum';
 import { MembersService } from '../members/services/members.service';
 import { UtilsService } from '../../shared/services/utils.service';
+import { TipoAnexo } from '../../shared/constants/tipo-anexo.enum';
 
 @Component({
   selector: 'app-contributions',
@@ -263,6 +264,6 @@ export class ContributionsComponent implements OnInit {
   }
 
   async downloadAttachment(url: string): Promise<void> {
-    this.utilsService.downloadAttachment(url);
+    this.utilsService.downloadAttachment(url, TipoAnexo.CONTRIBUICAO);
   }
 }
