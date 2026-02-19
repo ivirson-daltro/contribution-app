@@ -25,7 +25,7 @@
           <select class="form-control" [(ngModel)]="categoryId">
             <option [value]="null" disabled selected>- Selecione</option>
             @for ((category of categories$ | async); track $index) {
-              <option [value]="category.id">{{ category.name }}</option>
+              <option [value]="category.id">{{ category.description }}</option>
             }
           </select>
         </div>
@@ -133,7 +133,7 @@
                         | currency: 'BRL' : 'symbol' : '1.2-2' : 'pt-BR'
                     }}
                   </td>
-                  <td class="text-center">{{ item.category.name }}</td>
+                  <td class="text-center">{{ item.category.description }}</td>
                   <td class="d-flex justify-content-center">
                     @if (item.attachmentUrl) {
                       <a

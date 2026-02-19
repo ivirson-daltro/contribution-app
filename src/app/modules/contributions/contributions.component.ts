@@ -7,19 +7,20 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { first, Observable } from 'rxjs';
+import { environment } from '../../../environments/environment';
+import { ConfirmModalComponent } from '../../shared/components/confirm-modal/confirm-modal.component';
+import { TipoAnexo } from '../../shared/constants/tipo-anexo.enum';
 import { ToastService } from '../../shared/services/toast.service';
-import { Contribution, ContributionType, Member, PaymentMethod } from '../home/models/domain.model';
-import { DashboardService } from '../home/services/dashboard.service';
+import { UtilsService } from '../../shared/services/utils.service';
+import { Member } from '../members/models/member.model';
+import { MembersService } from '../members/services/members.service';
+import { ContributionType, PaymentMethod } from '../parameters/models/parameters.models';
+import { UserRoles } from '../users/constants/user-roles.enum';
+import { User } from '../users/models/user.model';
 import { AddContributionComponent } from './components/add/add-contributions.component';
 import { WeeklyReportDialogComponent } from './components/weekly-report-dialog/weekly-report-dialog.component';
+import { Contribution } from './models/contribution.model';
 import { ContributionsService } from './services/contributions.service';
-import { ConfirmModalComponent } from '../../shared/components/confirm-modal/confirm-modal.component';
-import { environment } from '../../../environments/environment';
-import { User } from '../users/models/user.model';
-import { UserRoles } from '../users/constants/user-roles.enum';
-import { MembersService } from '../members/services/members.service';
-import { UtilsService } from '../../shared/services/utils.service';
-import { TipoAnexo } from '../../shared/constants/tipo-anexo.enum';
 
 @Component({
   selector: 'app-contributions',

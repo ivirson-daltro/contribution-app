@@ -10,10 +10,10 @@ import { NgxMaskDirective } from 'ngx-mask';
 import { Observable } from 'rxjs';
 import { ToastService } from '../../../../shared/services/toast.service';
 import { UtilsService } from '../../../../shared/services/utils.service';
-import { ExpenseCategory } from '../../models/expense-category.model';
 import { Expense } from '../../models/expense.model';
 import { ExpensesService } from '../../services/expenses.service';
 import { TipoAnexo } from '../../../../shared/constants/tipo-anexo.enum';
+import { ExpenseCategory } from '../../../parameters/models/parameters.models';
 
 @Component({
   selector: 'app-add-expenses',

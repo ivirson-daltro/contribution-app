@@ -14,11 +14,11 @@ import { UsersService } from '../../services/users.service';
 import { User } from '../../models/user.model';
 import { UserRoles } from '../../constants/user-roles.enum';
 import { MembersService } from '../../../members/services/members.service';
-import { Member } from '../../../home/models/domain.model';
 import { AsyncPipe } from '@angular/common';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
+import { Member } from '../../../members/models/member.model';
 
 @Component({
   selector: 'app-add-users',

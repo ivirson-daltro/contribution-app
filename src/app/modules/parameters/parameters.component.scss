@@ -1,0 +1,19 @@
+.mat-expansion-panel {
+  box-shadow: 0 1px 1px rgba(15, 23, 42, 0.06) !important;
+  border: 1px solid rgba(148, 163, 184, 0.25);
+  background-color: #ffffff;
+}
+
+.mat-expansion-panel-header-title {
+  font-weight: 500;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  height: 2.5rem;
+  margin-top: 1.75rem;
+  background-color: #0b2454;
+}

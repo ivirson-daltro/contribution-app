@@ -1,4 +1,4 @@
-import { Member } from '../../home/models/domain.model';
+import { Member } from '../../members/models/member.model';
 import { UserRoles } from '../constants/user-roles.enum';
 
 export interface User {

@@ -1,15 +1,15 @@
 import { AsyncPipe } from '@angular/common';
-import { Component, inject, OnInit, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Component, inject, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
-import { first, Observable } from 'rxjs';
-import { Member, MemberType } from '../../../home/models/domain.model';
-import { MembersService } from '../../services/members.service';
-import { ToastService } from '../../../../shared/services/toast.service';
 import { NgxMaskDirective } from 'ngx-mask';
+import { first, Observable } from 'rxjs';
+import { ToastService } from '../../../../shared/services/toast.service';
+import { MemberType } from '../../../parameters/models/parameters.models';
 import { Address } from '../../models/address.model';
+import { Member } from '../../models/member.model';
+import { MembersService } from '../../services/members.service';
 
 @Component({
   selector: 'app-add-members',

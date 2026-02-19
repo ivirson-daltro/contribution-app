@@ -73,7 +73,6 @@ export class ExpensesComponent implements OnInit {
           this.totalExpenses = 0;
           return;
         }
-        console.log('Expenses:', res);
         this.expenses = res.data ?? [];
         this.totalExpenses = res.total ?? 0;
         this.pageIndex = (res.page ?? page) - 1;

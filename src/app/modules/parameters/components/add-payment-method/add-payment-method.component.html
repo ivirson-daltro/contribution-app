@@ -1,0 +1,39 @@
+<div class="cadastrar-container">
+  <div class="cadastrar-card">
+    <h2 mat-dialog-title class="card-title">{{ data ? 'Editar' : 'Novo' }} método de pagamento</h2>
+    <form [formGroup]="form" (ngSubmit)="submit()" class="parameter-form">
+      <mat-dialog-content>
+        <div class="mb-3">
+          <div class="row">
+            <div class="col-lg-12 mb-3">
+              <label for="type" class="form-label">Tipo</label>
+              <input
+                type="text"
+                class="form-control"
+                formControlName="type"
+                placeholder="Digite o tipo. Ex: PIX, Espécie"
+              />
+            </div>
+            <div class="col-lg-12">
+              <label for="description" class="form-label">Descrição</label>
+              <input
+                type="text"
+                class="form-control"
+                formControlName="description"
+                placeholder="Digite a descrição"
+              />
+            </div>
+          </div>
+        </div>
+      </mat-dialog-content>
+
+      <mat-dialog-actions class="form-footer" align="end">
+        <button type="button" class="btn cancel-button" (click)="close()">Cancelar</button>
+        <button type="submit" class="btn btn-primary submit-button" [disabled]="form.invalid">
+          <mat-icon fontIcon="save" class="submit-icon"></mat-icon>
+          {{ data ? 'Editar' : 'Cadastrar' }} método de pagamento
+        </button>
+      </mat-dialog-actions>
+    </form>
+  </div>
+</div>

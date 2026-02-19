@@ -1,4 +1,4 @@
-import { ExpenseCategory } from './expense-category.model';
+import { ExpenseCategory } from '../../parameters/models/parameters.models';
 
 export interface Expense {
   id: string;

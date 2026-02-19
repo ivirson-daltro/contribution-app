@@ -10,7 +10,7 @@
               <select class="form-control" formControlName="categoryId">
                 <option value="" disabled selected>- Selecione</option>
                 @for ((category of categories$ | async); track $index) {
-                  <option [value]="category.id">{{ category.name }}</option>
+                  <option [value]="category.id">{{ category.description }}</option>
                 }
               </select>
             </div>

@@ -87,6 +87,24 @@
               <span>Usuários</span>
             </button>
           }
+
+          @if (
+            user?.role === userRoles.ADMIN ||
+            user?.role === userRoles.TREASURER ||
+            user?.role === userRoles.SECRETARY ||
+            user?.role === userRoles.PRESIDENT
+          ) {
+            <button
+              mat-button
+              class="layout-sidenav__item"
+              routerLink="parameters"
+              routerLinkActive="layout-sidenav__item--active"
+              (click)="closeSidenavOnMobile()"
+            >
+              <mat-icon>settings</mat-icon>
+              <span>Parâmetros</span>
+            </button>
+          }
         </nav>
       </section>
 

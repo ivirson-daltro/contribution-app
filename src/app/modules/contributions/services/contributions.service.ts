@@ -2,12 +2,9 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../../../environments/environment';
-import {
-  Contribution,
-  ContributionType,
-  PaginatedResponse,
-  PaymentMethod,
-} from '../../home/models/domain.model';
+import { PaginatedResponse } from '../../home/models/paginated-response.model';
+import { ContributionType, PaymentMethod } from '../../parameters/models/parameters.models';
+import { Contribution } from '../models/contribution.model';
 
 @Injectable({
   providedIn: 'root',

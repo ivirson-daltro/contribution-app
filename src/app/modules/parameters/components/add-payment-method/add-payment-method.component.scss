@@ -6,7 +6,7 @@
     color: #0b2454;
   }
 
-  .contribution-form {
+  .parameter-form {
     .form-body {
       padding-top: 0.25rem;
     }
@@ -21,23 +21,6 @@
 
     .mat-mdc-form-field {
       width: 100%;
-    }
-
-    .mat-mdc-text-field-wrapper {
-      background-color: #f7f9fc;
-      border-radius: 0.75rem;
-    }
-
-    .mat-mdc-form-field-appearance-outline .mdc-notched-outline__leading,
-    .mat-mdc-form-field-appearance-outline .mdc-notched-outline__notch,
-    .mat-mdc-form-field-appearance-outline .mdc-notched-outline__trailing {
-      border-color: #d1d5db;
-    }
-
-    .mat-mdc-form-field.mat-focused .mdc-notched-outline__leading,
-    .mat-mdc-form-field.mat-focused .mdc-notched-outline__notch,
-    .mat-mdc-form-field.mat-focused .mdc-notched-outline__trailing {
-      border-color: #1d4ed8;
     }
 
     .form-footer {
@@ -63,19 +46,6 @@
       background-color: #0b2454;
       font-weight: 600;
     }
-  }
-}
-
-.attachment-link {
-  display: flex;
-  align-items: center;
-  color: #0b2454;
-  text-decoration: none;
-
-  mat-icon {
-    font-size: 1.25rem;
-    margin-left: 0.25rem;
-    margin-top: 0.25rem;
   }
 }
 

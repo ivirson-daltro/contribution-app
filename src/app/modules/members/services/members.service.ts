@@ -2,7 +2,9 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../../../environments/environment';
-import { Member, MemberType, PaginatedResponse } from '../../home/models/domain.model';
+import { PaginatedResponse } from '../../home/models/paginated-response.model';
+import { MemberType } from '../../parameters/models/parameters.models';
+import { Member } from '../models/member.model';
 
 @Injectable({
   providedIn: 'root',

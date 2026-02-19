@@ -11,11 +11,11 @@ import { first } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { ConfirmModalComponent } from '../../shared/components/confirm-modal/confirm-modal.component';
 import { ToastService } from '../../shared/services/toast.service';
-import { Member } from '../home/models/domain.model';
 import { UserRoles } from '../users/constants/user-roles.enum';
 import { User } from '../users/models/user.model';
 import { AddMembersComponent } from './components/add/add-members.component';
 import { MembersService } from './services/members.service';
+import { Member } from './models/member.model';
 
 @Component({
   selector: 'app-members',

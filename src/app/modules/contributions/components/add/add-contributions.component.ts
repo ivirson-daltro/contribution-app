@@ -20,18 +20,15 @@ import { MatSelectModule } from '@angular/material/select';
 import { NgxMaskDirective } from 'ngx-mask';
 import { first, Observable } from 'rxjs';
 import { map, startWith, switchMap } from 'rxjs/operators';
-import {
-  Contribution,
-  ContributionType,
-  Member,
-  PaymentMethod,
-} from '../../../home/models/domain.model';
-import { AddMembersComponent } from '../../../members/components/add/add-members.component';
-import { MembersService } from '../../../members/services/members.service';
-import { ContributionsService } from '../../services/contributions.service';
-import { UtilsService } from '../../../../shared/services/utils.service';
-import { ToastService } from '../../../../shared/services/toast.service';
 import { TipoAnexo } from '../../../../shared/constants/tipo-anexo.enum';
+import { ToastService } from '../../../../shared/services/toast.service';
+import { UtilsService } from '../../../../shared/services/utils.service';
+import { AddMembersComponent } from '../../../members/components/add/add-members.component';
+import { Member } from '../../../members/models/member.model';
+import { MembersService } from '../../../members/services/members.service';
+import { ContributionType, PaymentMethod } from '../../../parameters/models/parameters.models';
+import { Contribution } from '../../models/contribution.model';
+import { ContributionsService } from '../../services/contributions.service';
 
 @Component({
   selector: 'app-add-contributions',
