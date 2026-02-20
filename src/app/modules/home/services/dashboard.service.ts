@@ -11,12 +11,12 @@ export class DashboardService {
   private readonly httpClient = inject(HttpClient);
 
   getDashboardSummary(): Observable<DashboardSummary> {
-    return this.httpClient.get<DashboardSummary>(`${environment.apiUrl}/contributions/dashboard`);
+    return this.httpClient.get<DashboardSummary>(`${environment.apiUrl}/dashboard/summary`);
   }
 
   getDashboardPaymentMethods(): Observable<PaymentMethodPeriodTotals[]> {
     return this.httpClient.get<PaymentMethodPeriodTotals[]>(
-      `${environment.apiUrl}/contributions/dashboard/payment-methods`,
+      `${environment.apiUrl}/dashboard/payment-methods`,
     );
   }
 }

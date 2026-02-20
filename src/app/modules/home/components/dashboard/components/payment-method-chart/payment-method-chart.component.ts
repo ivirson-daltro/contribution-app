@@ -157,13 +157,13 @@ export class PaymentMethodChartComponent implements AfterViewInit, OnChanges, On
     const normalized = type.toLowerCase();
 
     if (normalized.includes('pix')) {
-      return '#f97316'; // laranja
+      return '#3BA55D';
     }
 
     if (normalized.includes('esp')) {
-      return '#2563eb'; // azul
+      return '#1E4E8C';
     }
 
-    return '#64748b'; // cinza padrão
+    return '#64748b';
   }
 }

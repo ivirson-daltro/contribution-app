@@ -1,4 +1,7 @@
 export interface DashboardSummary {
+  contributionsByPaymentMethod: ContributionByPaymentMethod[];
+  currentYearContributionsByMonth: MonthlyContribution[];
+  lastYearContributionsByMonth: MonthlyContribution[];
   totalContributions: number;
   totalWeeklyContributions: number;
   totalMonthlyContributions: number;
@@ -9,15 +12,21 @@ export interface DashboardSummary {
   totalMonthlyAmount: number;
   totalMembers: number;
   totalMembersContributing: number;
-  contributionsByPaymentMethod: ContributionByPaymentMethod[];
-  currentYearContributionsByMonth: MonthlyContribution[];
-  lastYearContributionsByMonth: MonthlyContribution[];
+  totalMonthlyExpenses: number;
+  totalYearlyExpenses: number;
+  totalWeeklyExpenses: number;
+  totalWeeklyExpensesCount: number;
+  totalMonthlyExpensesCount: number;
+  totalYearlyExpensesCount: number;
+  totalConstructionOffers: number;
+  totalConstructionOfferAmount: number;
 }
 
 export interface MonthlyContribution {
   month: string;
   totalPix: number;
   totalCash: number;
+  totalExpenses: number;
 }
 
 export interface ContributionByPaymentMethod {

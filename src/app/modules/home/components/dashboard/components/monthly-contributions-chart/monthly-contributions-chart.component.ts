@@ -24,8 +24,7 @@ Chart.register(...registerables);
 export class MonthlyContributionsChartComponent implements AfterViewInit, OnChanges, OnDestroy {
   @ViewChild('chartCanvas') chartCanvas?: ElementRef<HTMLCanvasElement>;
 
-  @Input() currentYear: MonthlyContribution[] | null | undefined;
-  @Input() lastYear: MonthlyContribution[] | null | undefined;
+  @Input() monthlyData: MonthlyContribution[] | null | undefined;
 
   private chart?: Chart<'bar'>;
 
@@ -34,10 +33,9 @@ export class MonthlyContributionsChartComponent implements AfterViewInit, OnChan
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    const currentChanged = !!changes['currentYear'] && !changes['currentYear'].firstChange;
-    const lastChanged = !!changes['lastYear'] && !changes['lastYear'].firstChange;
+    const currentChanged = !!changes['monthlyData'] && !changes['monthlyData'].firstChange;
 
-    if (currentChanged || lastChanged) {
+    if (currentChanged) {
       this.updateChart();
     }
   }
@@ -76,50 +74,35 @@ export class MonthlyContributionsChartComponent implements AfterViewInit, OnChan
   }
 
   private buildData() {
-    const current = this.currentYear ?? [];
-    const last = this.lastYear ?? [];
-
-    const labels = current.length ? current.map((m) => m.month) : last.map((m) => m.month);
-
-    const getEntry = (source: MonthlyContribution[], month: string): MonthlyContribution | null => {
-      return source.find((m) => m.month === month) ?? null;
-    };
-
-    const currentPix = labels.map((month) => getEntry(current, month)?.totalPix ?? 0);
-    const currentCash = labels.map((month) => getEntry(current, month)?.totalCash ?? 0);
-    const lastPix = labels.map((month) => getEntry(last, month)?.totalPix ?? 0);
-    const lastCash = labels.map((month) => getEntry(last, month)?.totalCash ?? 0);
+    const data = this.monthlyData ?? [];
+    const labels = data.map((m) => m.month);
+    const pix = data.map((m) => m.totalPix ?? 0);
+    const cash = data.map((m) => m.totalCash ?? 0);
+    const expenses = data.map((m) => m.totalExpenses ?? 0);
 
     return {
       labels,
       datasets: [
         {
-          label: 'Espécie (ano atual)',
-          data: currentCash,
-          backgroundColor: '#2563eb',
+          label: 'Entradas - Espécie',
+          data: cash,
+          backgroundColor: '#1E4E8C',
           borderWidth: 0,
-          stack: 'current',
+          stack: 'entradas',
         },
         {
-          label: 'PIX (ano atual)',
-          data: currentPix,
-          backgroundColor: '#f97316',
+          label: 'Entradas - PIX',
+          data: pix,
+          backgroundColor: '#3BA55D',
           borderWidth: 0,
-          stack: 'current',
+          stack: 'entradas',
         },
         {
-          label: 'Espécie (ano anterior)',
-          data: lastCash,
-          backgroundColor: '#303030',
+          label: 'Despesas',
+          data: expenses,
+          backgroundColor: '#B71C1C',
           borderWidth: 0,
-          stack: 'last',
-        },
-        {
-          label: 'PIX (ano anterior)',
-          data: lastPix,
-          backgroundColor: '#888888',
-          borderWidth: 0,
-          stack: 'last',
+          stack: 'despesas',
         },
       ],
     };

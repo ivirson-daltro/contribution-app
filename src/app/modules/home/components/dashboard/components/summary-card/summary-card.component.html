@@ -1,4 +1,4 @@
-<mat-card class="summary-card h-100">
+<mat-card class="summary-card h-100" [ngStyle]="{ 'background-color': bg }">
   <div class="d-flex justify-content-between align-items-start mb-2">
     <div>
       <h2 class="summary-title mb-1">{{ title }}</h2>
@@ -6,8 +6,8 @@
         {{ amount }}
       </p>
     </div>
-    <div class="summary-icon">
-      <img [src]="iconSrc" [alt]="iconAlt" />
+    <div class="summary-icon" [ngStyle]="{ 'background-color': iconBg, color: iconColor }">
+      <mat-icon>{{ icon }}</mat-icon>
     </div>
   </div>
   @if (subtitle) {

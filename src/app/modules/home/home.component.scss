@@ -51,6 +51,12 @@
   justify-content: flex-start;
   border-radius: 0.6rem;
   color: #e5e7eb;
+  transition: background 0.2s;
+
+  &:hover {
+    background: rgba(248, 250, 252, 0.1);
+    color: #fff;
+  }
 
   mat-icon {
     margin-right: 0.5rem;
