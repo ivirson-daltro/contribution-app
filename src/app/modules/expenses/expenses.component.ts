@@ -15,6 +15,7 @@ import { AddExpensesComponent } from './components/add/add-expenses.component';
 import { Expense } from './models/expense.model';
 import { ExpensesService } from './services/expenses.service';
 import { TipoAnexo } from '../../shared/constants/tipo-anexo.enum';
+import { MonthlyReportDialogComponent } from './components/monthly-report-dialog/monthly-report-dialog.component';
 
 @Component({
   selector: 'app-expenses',
@@ -94,8 +95,34 @@ export class ExpensesComponent implements OnInit {
   }
 
   getMonthlyReport(): void {
-    // Implementar lógica para gerar e baixar o relatório mensal de despesas
-    this.toastService.success('Relatório mensal de despesas gerado com sucesso!');
+    const dialogRef = this.dialog.open(MonthlyReportDialogComponent, {
+      width: '400px',
+      autoFocus: false,
+    });
+
+    dialogRef.afterClosed().subscribe((result: { month: string; year: number } | undefined) => {
+      if (result) {
+        this.expensesService
+          .getMonthlyReport(result.month, result.year)
+          .pipe(first())
+          .subscribe({
+            next: (blob) => {
+              const url = window.URL.createObjectURL(blob);
+              const a = document.createElement('a');
+              a.href = url;
+              a.download = `relatorio-mensal-despesas-${result.month}-${result.year}.pdf`;
+              a.click();
+              window.URL.revokeObjectURL(url);
+            },
+            error: (error) => {
+              this.toastService.error(
+                error.error.error || 'Erro desconhecido',
+                'Erro ao gerar relatório mensal de despesas',
+              );
+            },
+          });
+      }
+    });
   }
 
   get totalPages(): number {

@@ -101,16 +101,9 @@
                   ></mat-icon>
                 }
               </th>
+              <th class="text-center">Descrição</th>
               <th class="text-center">Anexo</th>
-              <th (click)="changeSort('categoryId')" class="sortable text-center">
-                Observações
-                @if (sortBy === 'categoryId') {
-                  <mat-icon
-                    class="sort-icon"
-                    fontIcon="{{ sortDirection === 'asc' ? 'arrow_upward' : 'arrow_downward' }}"
-                  ></mat-icon>
-                }
-              </th>
+              <th class="text-center">Observações</th>
               @if (user?.role === userRoles.ADMIN || user?.role === userRoles.TREASURER) {
                 <th class="text-center">Ações</th>
               }
@@ -134,6 +127,7 @@
                     }}
                   </td>
                   <td class="text-center">{{ item.category.description }}</td>
+                  <td class="text-center">{{ item.description }}</td>
                   <td class="d-flex justify-content-center">
                     @if (item.attachmentUrl) {
                       <a
@@ -144,7 +138,7 @@
                         <mat-icon fontIcon="attach_file"></mat-icon>
                       </a>
                     } @else {
-                      <span class="text-muted">-</span>
+                      <span class="text-muted py-2">-</span>
                     }
                   </td>
                   <td class="text-center">{{ item.notes }}</td>

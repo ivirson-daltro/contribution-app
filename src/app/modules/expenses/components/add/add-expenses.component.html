@@ -28,7 +28,7 @@
                 prefix="R$ "
                 inputMode="decimal"
                 autocomplete="off"
-                [dropSpecialCharacters]="true"
+                [dropSpecialCharacters]="false"
                 (blur)="utilsService.onAmountBlur(form, 'value')"
               />
             </div>
@@ -49,6 +49,16 @@
             </div>
 
             <div class="col-lg-6">
+              <label for="description" class="form-label">Descrição</label>
+              <input
+                type="text"
+                class="form-control"
+                formControlName="description"
+                placeholder="Digite a descrição"
+              />
+            </div>
+
+            <div class="col-lg-12">
               <label for="attachment" class="form-label">Anexar Comprovante</label>
               <input
                 type="file"

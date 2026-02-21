@@ -66,4 +66,12 @@ export class ExpensesService {
   deleteExpense(id: string): Observable<void> {
     return this.httpClient.delete<void>(`${environment.apiUrl}/expenses/${id}`);
   }
+
+  getMonthlyReport(month: string, year: number): Observable<Blob> {
+    const params = new HttpParams().set('month', month).set('year', year.toString());
+    return this.httpClient.get(`${environment.apiUrl}/expenses/monthly/report`, {
+      params,
+      responseType: 'blob',
+    });
+  }
 }

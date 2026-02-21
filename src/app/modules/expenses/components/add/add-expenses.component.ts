@@ -54,6 +54,7 @@ export class AddExpensesComponent implements OnInit {
     if (this.data) {
       this.form.patchValue({
         value: this.data.value,
+        description: this.data.description,
         categoryId: this.data.categoryId,
         date: this.data.date
           ? this.data.date.substring(0, 10)
@@ -66,6 +67,7 @@ export class AddExpensesComponent implements OnInit {
   buildForm(): void {
     this.form = this.fb.group({
       value: [null, Validators.required],
+      description: [null, Validators.required],
       categoryId: ['', Validators.required],
       date: [this.today.toISOString().substring(0, 10), Validators.required],
       notes: [''],
@@ -76,7 +78,7 @@ export class AddExpensesComponent implements OnInit {
     const raw = this.form.getRawValue();
     const payload: Expense = {
       ...raw,
-      value: typeof raw.value === 'string' ? parseFloat(raw.value.replace(',', '.')) : raw.value,
+      value: this.utilsService.normalizeAmount(raw.value),
       attachmentUrl: this.data?.attachmentUrl ?? null,
     };
 
